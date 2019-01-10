@@ -79,20 +79,16 @@
 
 
 
-<meta name="description" content="ffmpeg视频切片转码合并 第一步：原视频切片  1ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov -segment_time: 指定每个切片的大致时长(s)">
-<meta property="og:type" content="article">
-<meta property="og:title" content="ffmpeg视频切片转码合并">
-<meta property="og:url" content="http://yoursite.com/2019/01/10/大视频的切片与分布式转码/index.html">
+<meta name="description" content="Just write something">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Younger&#39;s Blog">
+<meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="Younger&#39;s Blog">
-<meta property="og:description" content="ffmpeg视频切片转码合并 第一步：原视频切片  1ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov -segment_time: 指定每个切片的大致时长(s)">
+<meta property="og:description" content="Just write something">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/2019/01/10/大视频的切片与分布式转码/images/1540950217348.png">
-<meta property="og:image" content="http://yoursite.com/2019/01/10/大视频的切片与分布式转码/images/1540953744501.png">
-<meta property="og:updated_time" content="2019-01-10T07:38:48.983Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ffmpeg视频切片转码合并">
-<meta name="twitter:description" content="ffmpeg视频切片转码合并 第一步：原视频切片  1ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov -segment_time: 指定每个切片的大致时长(s)">
-<meta name="twitter:image" content="http://yoursite.com/2019/01/10/大视频的切片与分布式转码/images/1540950217348.png">
+<meta name="twitter:title" content="Younger&#39;s Blog">
+<meta name="twitter:description" content="Just write something">
 
 
 
@@ -122,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/01/10/大视频的切片与分布式转码/">
+  <link rel="canonical" href="http://yoursite.com/">
 
 
 
 
 
-  <title>ffmpeg视频切片转码合并 | Younger's Blog</title>
+  <title>Younger's Blog</title>
   
 
 
@@ -147,7 +143,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -240,9 +237,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -272,7 +269,9 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ffmpeg视频切片转码合并</h1>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/10/大视频的切片与分布式转码/" itemprop="url">ffmpeg视频切片转码合并</a></h1>
         
 
         <div class="post-meta">
@@ -322,7 +321,9 @@
       
 
       
-        <h1 id="ffmpeg视频切片转码合并"><a href="#ffmpeg视频切片转码合并" class="headerlink" title="ffmpeg视频切片转码合并"></a>ffmpeg视频切片转码合并</h1><ul>
+        
+          
+            <h1 id="ffmpeg视频切片转码合并"><a href="#ffmpeg视频切片转码合并" class="headerlink" title="ffmpeg视频切片转码合并"></a>ffmpeg视频切片转码合并</h1><ul>
 <li><strong>第一步</strong>：原视频切片</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov</span><br></pre></td></tr></table></figure>
@@ -388,6 +389,8 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -f concat -i index.txt -c copy output.mp4</span><br></pre></td></tr></table></figure>
 <p>转码和合并更具体的操作可参见官方文档。</p>
 
+          
+        
       
     </div>
     
@@ -404,12 +407,12 @@
       
 
       
-      
-      
 
       
 
       
+      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -419,11 +422,10 @@
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
 
 
           </div>
@@ -431,10 +433,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -455,17 +453,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -523,22 +512,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ffmpeg视频切片转码合并"><span class="nav-number">1.</span> <span class="nav-text">ffmpeg视频切片转码合并</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一、-ss-t的使用："><span class="nav-number">1.0.0.1.</span> <span class="nav-text">第一、-ss -t的使用：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二、-f-segment的使用："><span class="nav-number">1.0.0.2.</span> <span class="nav-text">第二、-f segment的使用：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#法一："><span class="nav-number">1.0.0.2.1.</span> <span class="nav-text">法一：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#法二："><span class="nav-number">1.0.0.2.2.</span> <span class="nav-text">法二：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#法三："><span class="nav-number">1.0.0.2.3.</span> <span class="nav-text">法三：</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -679,10 +652,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
