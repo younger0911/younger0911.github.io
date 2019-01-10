@@ -86,13 +86,13 @@
 <meta property="og:site_name" content="Younger&#39;s Blog">
 <meta property="og:description" content="ffmpeg视频切片转码合并 第一步：原视频切片  1ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov -segment_time: 指定每个切片的大致时长(s)">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/2019/01/10/大视频的切片与分布式转码/images/1540950217348.png">
-<meta property="og:image" content="http://yoursite.com/2019/01/10/大视频的切片与分布式转码/images/1540953744501.png">
+<meta property="og:image" content="http://yoursite.com/images/1540950217348.png">
+<meta property="og:image" content="http://yoursite.com/images/1540953744501.png">
 <meta property="og:updated_time" content="2019-01-10T07:52:23.688Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ffmpeg视频切片转码合并">
 <meta name="twitter:description" content="ffmpeg视频切片转码合并 第一步：原视频切片  1ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov -segment_time: 指定每个切片的大致时长(s)">
-<meta name="twitter:image" content="http://yoursite.com/2019/01/10/大视频的切片与分布式转码/images/1540950217348.png">
+<meta name="twitter:image" content="http://yoursite.com/images/1540950217348.png">
 
 
 
@@ -335,7 +335,7 @@
 <p>*注： 之前一直用</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.avi -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.avi</span><br></pre></td></tr></table></figure>
 <p>切片，但是其他格式正常，avi却不成功，只会生成一片piece_000.avi。以下记录一下尝试过的解决办法：</p>
-<h4 id="第一、-ss-t的使用："><a href="#第一、-ss-t的使用：" class="headerlink" title="第一、-ss -t的使用："></a>第一、<code>-ss -t</code>的使用：</h4><p><img src="/2019/01/10/大视频的切片与分布式转码/images/1540950217348.png" alt=""></p>
+<h4 id="第一、-ss-t的使用："><a href="#第一、-ss-t的使用：" class="headerlink" title="第一、-ss -t的使用："></a>第一、<code>-ss -t</code>的使用：</h4><p><img src="/images/1540950217348.png" alt=""></p>
 <ol>
 <li>-ss放在-i后面的话会比较慢，但是更准确（其实真的很慢，不推荐）</li>
 <li>-ss放在-i的前面是快寻找。</li>
@@ -372,7 +372,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -use_wallclock_as_timestamps 1 -i input.avi -acodec copy -vcodec copy -f segment -segment_time 300 -map 0:0 -map 0:1 piece_%03d.avi</span><br></pre></td></tr></table></figure>
 <p>第二第三两种方法的参数网上都有解释，不赘述了。</p>
 <p>**官方文档中，-f segment还可以将视频生成m3u8格式，可用作HLS：</p>
-<p><img src="/2019/01/10/大视频的切片与分布式转码/images/1540953744501.png" alt=""></p>
+<p><img src="/images/1540953744501.png" alt=""></p>
 <hr>
 <ul>
 <li><strong>第二步</strong>：转码</li>
