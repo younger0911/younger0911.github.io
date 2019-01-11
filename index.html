@@ -355,16 +355,16 @@
       
         
           
-            <p>vue+element-ui使用upload上传组件时动态赋值action问题</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">el-upload</span></span></span><br><span class="line"><span class="tag">           <span class="attr">name</span>=<span class="string">"files"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:action</span>=<span class="string">"upAct"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:headers</span>=<span class="string">"upHeader"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">list-type</span>=<span class="string">"picture-card"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-preview</span>=<span class="string">"handlePictureCardPreview"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-remove</span>=<span class="string">"handleRemove"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:before-remove</span>=<span class="string">"beforeRemove"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-success</span>=<span class="string">"showSaveSuccess"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-error</span>=<span class="string">"showSaveError"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:auto-upload</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:multiple</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:limit</span>=<span class="string">"10"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">ref</span>=<span class="string">"uploadF"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"el-icon-plus"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">el-upload</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data()&#123;</span><br><span class="line">      <span class="keyword">return</span>&#123;</span><br><span class="line">      	upHeader: &#123;<span class="string">"Authorization"</span>: getCookie(<span class="string">"token"</span>)&#125;,</span><br><span class="line">        upAct: <span class="string">''</span>,</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">methods:&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">this</span>.upAct = <span class="string">"/api/store/upFiles?storeId="</span> + res.data.msg;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.$refs.uploadF.submit();</span><br><span class="line">    &#125;.bind(<span class="keyword">this</span>),<span class="number">500</span>)</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
-<p><strong>问题：</strong></p>
-<p>​    配置action后上传时会报错，action一直是空值。这是因为element的上传方法先执行，action的动态响应后执行。</p>
-<p><strong>现解决方法：</strong></p>
-<p>​    给提交动作加个延时，不然action一直是初始的空。</p>
-
-          
+          vue+element-ui使用upload上传组件时动态赋值action问题
+12345678910111213141516&lt;el-upload           name="files"           :action="upAct"           :headers="upHe
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/11/vue+element-ui使用upload上传组件时动态赋值action/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -504,73 +504,18 @@
       
         
           
-            <h1 id="ffmpeg视频切片转码合并"><a href="#ffmpeg视频切片转码合并" class="headerlink" title="ffmpeg视频切片转码合并"></a>ffmpeg视频切片转码合并</h1><ul>
-<li><strong>第一步</strong>：原视频切片</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov</span><br></pre></td></tr></table></figure>
-<p><strong>-segment_time</strong>: 指定每个切片的大致时长(s)，默认为2</p>
-<p><strong>-reset_timestamps</strong>: 设置每个切片的时间戳从零开始，不设置的话播放起来会有问题</p>
-<p><strong>-map</strong>: 指定提取的通道，比如某些多音轨的视频就会有多个音轨通道，一般0:0和0:1是默认的audio通道和video通道</p>
-<p><strong>-fflags +genpts</strong>：The -fflags +genpts will regenerate the pts timestamps so it loops smoothly, otherwise the time sequence will be incorrect as it loops （-fflags + genpts将重新生成pts时间戳，使其顺利循环，否则时间序列将不正确。<em>解决.avi格式切片无效的问题</em>）</p>
-<p>目前测试过的视频格式有：mov、avi、mp4、flv、mkv。rmvb格式切片之后只有声音没图像。</p>
-<hr>
-<p>*注： 之前一直用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.avi -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.avi</span><br></pre></td></tr></table></figure>
-<p>切片，但是其他格式正常，avi却不成功，只会生成一片piece_000.avi。以下记录一下尝试过的解决办法：</p>
-<h4 id="第一、-ss-t的使用："><a href="#第一、-ss-t的使用：" class="headerlink" title="第一、-ss -t的使用："></a>第一、<code>-ss -t</code>的使用：</h4><p><img src="/images/1540950217348.png" alt=""></p>
-<ol>
-<li>-ss放在-i后面的话会比较慢，但是更准确（其实真的很慢，不推荐）</li>
-<li>-ss放在-i的前面是快寻找。</li>
-</ol>
-<p>实践结果：</p>
-<p>第1种方法在拼接处会出现掉帧（播放的时候声音正常，但是画面会卡住几秒）</p>
-<p>第2种方法在拼接处会出现重复帧（播放时声音正常，但是画面会重复）</p>
-<p>寻找解决办法：</p>
-<ol>
-<li><p>添加<code>-accurate_seek</code>，按照实践精确分割：    –失败</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -accurate_seek -ss 00:03:00 -i video.mp4 -t 60 -c copy -avoid_negative_ts 1 cut.mp4</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>添加<code>-noaccurate_seek</code>，会在时间附近的关键帧处进行分割，感觉很靠谱：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -noaccurate_seek -ss 00:03:00 -i video.mp4 -t 60 -c copy -avoid_negative_ts 1 cut.mp4</span><br></pre></td></tr></table></figure>
-<p>测试了几个视频，分割转码再合并，观察输出的视频肉眼确实没有看出掉帧问题，声音也正常。然而按照300s切割的视频，播放的时候时间会直接从4:57直接跳到5:00，略过约3s，时间跳三秒但是没看出来掉帧。所以感觉这个方法还是有问题。（此处只是简单测试，并没有深入研究，按理说按照关键帧进行分割是没有问题的，网上很多资料也是说按照关键帧分割）</p>
-</li>
-<li><p>难道<code>-noaccurate_seek</code>参数不靠谱？那么先手动找到视频的关键帧，然后在关键帧的位置分割呢。</p>
-<p>参考<code>ffprobe -show_frames -pretty input.avi</code>命令，输出视频关键帧信息，大致是这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">[FRAME]</span><br><span class="line">media_type=audio</span><br><span class="line">stream_index=1</span><br><span class="line">key_frame=1</span><br><span class="line">pkt_pts=42984</span><br><span class="line">pkt_pts_time=0:00:07.164000</span><br><span class="line">pkt_dts=42984</span><br><span class="line">pkt_dts_time=0:00:07.164000</span><br><span class="line">best_effort_timestamp=42984</span><br><span class="line">best_effort_timestamp_time=0:00:07.164000</span><br><span class="line">pkt_duration=216</span><br><span class="line">pkt_duration_time=0:00:00.036000</span><br><span class="line">pkt_pos=678738</span><br><span class="line">pkt_size=216 byte</span><br><span class="line">sample_fmt=fltp</span><br><span class="line">nb_samples=576</span><br><span class="line">channels=2</span><br><span class="line">channel_layout=stereo</span><br><span class="line">[/FRAME]</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>找到5分钟左右的关键帧所对应的dts时间：<code>pkt_dts_time=0:05:00.024000</code>，然后在此处进行分割：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -ss 0 -t dts_time -accurate_seek -i cat.avi -c copy -avoid_negative_ts 1 piece_00.avi</span><br><span class="line"></span><br><span class="line">ffmpeg -ss dts_time -t dur_time -accurate_seek -i cat.avi -c copy -avoid_negative_ts 1 piece_01.avi</span><br></pre></td></tr></table></figure>
-<p>然后再转码拼接，观察输出文件。结果和<code>-noaccurate_seek</code>效果一样，而且大视频找关键帧非常非常慢。</p>
-<p>这个实践对应一个简单的python实现，素材是一个7分多钟的avi视频，按照5分钟分割，不过代码写得特别简陋，而且参数都写死了，还是附一下吧：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess <span class="keyword">as</span> sp</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cut</span><span class="params">()</span>:</span></span><br><span class="line">    sp1 = sp.Popen(<span class="string">"ffprobe -show_frames -pretty cat.avi"</span>, shell=<span class="keyword">True</span>, stdout=sp.PIPE)</span><br><span class="line"></span><br><span class="line">    flag = <span class="keyword">False</span></span><br><span class="line">    cur_time = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        line = sp1.stdout.readline().rstrip()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> str(line).find(<span class="string">"key_frame=0"</span>) &gt;= <span class="number">0</span>:</span><br><span class="line">            flag = <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">if</span> str(line).find(<span class="string">"key_frame=1"</span>) &gt;= <span class="number">0</span>:</span><br><span class="line">            flag = <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">if</span> flag:</span><br><span class="line">            <span class="keyword">if</span> str(line).find(<span class="string">"pkt_dts_time="</span>) &gt;= <span class="number">0</span>:</span><br><span class="line">                flag = <span class="keyword">False</span></span><br><span class="line">                cur_time = parse_time(str(line))</span><br><span class="line">                <span class="keyword">if</span> int(cur_time[<span class="number">1</span>])*<span class="number">60</span> &gt;= <span class="number">300</span>:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    piece_time = str(cur_time[<span class="number">0</span>]) + <span class="string">":"</span> + str(cur_time[<span class="number">1</span>]) + <span class="string">":"</span> + str(cur_time[<span class="number">2</span>]) + <span class="string">"."</span> + str(cur_time[<span class="number">3</span>])[<span class="number">0</span>:<span class="number">3</span>]</span><br><span class="line">    c1 = sp.Popen(<span class="string">"ffmpeg -ss 0 -t "</span> + piece_time + <span class="string">" -accurate_seek -i cat.avi -c copy -avoid_negative_ts 1 piece_00.avi"</span>, shell=<span class="keyword">True</span>)</span><br><span class="line">    c2 = sp.Popen(<span class="string">"ffmpeg -ss "</span> + piece_time + <span class="string">" -t "</span> + piece_time + <span class="string">" -accurate_seek -i cat.avi -c copy -avoid_negative_ts 1 piece_01.avi"</span>, shell=<span class="keyword">True</span>)</span><br><span class="line">    c1.communicate()</span><br><span class="line">    c2.communicate()</span><br><span class="line"></span><br><span class="line">    c3 = sp.Popen(<span class="string">"ffmpeg -i piece_00.avi -acodec copy -vcodec copy out0.mp4"</span>, shell=<span class="keyword">True</span>)</span><br><span class="line">    c4 = sp.Popen(<span class="string">"ffmpeg -i piece_01.avi -acodec copy -vcodec copy out1.mp4"</span>, shell=<span class="keyword">True</span>)</span><br><span class="line">    c3.communicate()</span><br><span class="line">    c4.communicate()</span><br><span class="line"></span><br><span class="line">    c5 = sp.Popen(<span class="string">"touch index.txt"</span>, shell=<span class="keyword">True</span>)</span><br><span class="line">    c5.communicate()</span><br><span class="line">    f = open(<span class="string">"index.txt"</span>, <span class="string">'w'</span>)</span><br><span class="line">    f.write(<span class="string">"file 'out0.mp4'\nfile 'out1.mp4'"</span>)</span><br><span class="line">    f.close()</span><br><span class="line">    sp.Popen(<span class="string">"ffmpeg -y -f concat -i index.txt -c copy cat-out-1030.mp4"</span>, shell=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_time</span><span class="params">(line)</span>:</span></span><br><span class="line">    cur_time = re.findall(<span class="string">'(\d+)'</span>, line)</span><br><span class="line">    <span class="keyword">return</span> cur_time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    cut()</span><br></pre></td></tr></table></figure>
-<p>到此，<code>-ss -t</code>的方式正式放弃了，真是各种问题。</p>
-</li>
-</ol>
-<h4 id="第二、-f-segment的使用："><a href="#第二、-f-segment的使用：" class="headerlink" title="第二、-f segment的使用："></a>第二、<code>-f segment</code>的使用：</h4><h5 id="法一："><a href="#法一：" class="headerlink" title="法一："></a>法一：</h5><p>.avi格式的视频切片失效，可以将其不重新编码转成.mp4格式再进行切片：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.avi -c copy input_new.mp4</span><br></pre></td></tr></table></figure>
-<p>​    此办法成功，因为用的-c copy速度还算可以，但是不能接受先转一次码。</p>
-<h5 id="法二："><a href="#法二：" class="headerlink" title="法二："></a>法二：</h5><p>添加<code>-re</code>    –失败</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -re -i input.avi -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.avi</span><br></pre></td></tr></table></figure>
-<h5 id="法三："><a href="#法三：" class="headerlink" title="法三："></a>法三：</h5><p>使用<code>-use_wallclock_as_timestamps 1</code>    –失败</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -use_wallclock_as_timestamps 1 -i input.avi -acodec copy -vcodec copy -f segment -segment_time 300 -map 0:0 -map 0:1 piece_%03d.avi</span><br></pre></td></tr></table></figure>
-<p>第二第三两种方法的参数网上都有解释，不赘述了。</p>
-<p>**官方文档中，-f segment还可以将视频生成m3u8格式，可用作HLS：</p>
-<p><img src="/images/1540953744501.png" alt=""></p>
-<hr>
-<ul>
-<li><strong>第二步</strong>：转码</li>
-</ul>
-<p>最简单的形式：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i piece_000.mov -c copy out_000.mp4</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>第三步</strong>：合并</li>
-</ul>
-<p>新建一个所有分片的索引文件，例如index.txt，内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file &apos;out_000.mp4&apos;</span><br><span class="line">file &apos;out_001.mp4&apos;</span><br><span class="line">file &apos;out_002.mp4&apos;</span><br></pre></td></tr></table></figure>
-<p>最后执行以下命令将分片合并成一个完整视频：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -f concat -i index.txt -c copy output.mp4</span><br></pre></td></tr></table></figure>
-<p>转码和合并更具体的操作可参见官方文档。</p>
+          ffmpeg视频切片转码合并
+第一步：原视频切片
 
-          
+1ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -ma
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/10/大视频的切片与分布式转码/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
