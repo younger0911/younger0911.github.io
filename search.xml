@@ -16,44 +16,6 @@
       </tags>
   </entry>
   <entry>
-    <title>通过ingress-nginx转发后的服务获取访问客户端的真实IP地址</title>
-    <url>/2021/09/26/%E9%80%9A%E8%BF%87ingress-nginx%E8%BD%AC%E5%8F%91%E5%90%8E%E7%9A%84%E6%9C%8D%E5%8A%A1%E8%8E%B7%E5%8F%96%E8%AE%BF%E9%97%AE%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E7%9C%9F%E5%AE%9EIP%E5%9C%B0%E5%9D%80/</url>
-    <content><![CDATA[<h2 id="通过ingress-nginx转发后的服务获取访问客户端的真实IP地址"><a href="#通过ingress-nginx转发后的服务获取访问客户端的真实IP地址" class="headerlink" title="通过ingress-nginx转发后的服务获取访问客户端的真实IP地址"></a>通过ingress-nginx转发后的服务获取访问客户端的真实IP地址</h2><p>nginx获取客户端真实IP的配置一般用</p>
-<p>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</p>
-<a id="more"></a>
-<p>这个配置项（如果要获取每一级的完整链路，每一级代理都得加这个配置项）。详细参考：<a href="https://www.cnblogs.com/diaosir/p/6890825.html" target="_blank" rel="noopener">https://www.cnblogs.com/diaosir/p/6890825.html</a></p>
-<p>本地调试服务可以正确拿到客户端真实IP，但是通过k8s的ingress转发之后，拿到的却只有ingress网关的IP。</p>
-<p><img src="/images/image-20210126084610905.png" alt="image-20210126084610905"></p>
-<p>可以先进容器里面查看ingress-nginx的配置：</p>
-<p><img src="/images/image-20210126083439015.png" alt="image-20210126083439015"></p>
-<p>一般x-forwarded-for头都是$remote_addr，这只能获取到ingress代理的IP。</p>
-<p>服务里面拿到的IP为：</p>
-<p>[10.244.0.0, 10.244.2.2]</p>
-<p><img src="/images/MT50$BZK626(HR%7B%5DX" alt="img">FLWML.png)</p>
-<p>因为服务里面取的是x-forwarded-for这个头，所以要将ingress-nginx的x-forwarded-for修改为$proxy_add_x_forwarded_for</p>
-<p>编辑ingress的configmap：</p>
-<p>sudo kubectl -n ingress-nginx edit cm nginx-configuration</p>
-<p>data根元素下加入：</p>
-<p>data:<br>  compute-full-forwarded-for: “true”<br>  enable-underscores-in-headers: “true”<br>  use-forwarded-headers: “true”<br>  use-proxy-protocol: “true”</p>
-<p>保存会立即生效。再次查看ingress容器中的nginx配置文件，发现头已变成：</p>
-<p><img src="/images/image-20210126084058660.png" alt="image-20210126084058660"></p>
-<p>服务打印出的日志已变为：</p>
-<blockquote>
-<p>2021/01/26 08:30:27 interceptor.go:63: x-forwarded-for value is [101.95.178.162, 127.0.0.1, 10.244.0.0, 10.244.2.2]</p>
-</blockquote>
-<p>最前面一个就是客户端的ip，如果没有的话，说明客户端到第一级代理的地方没有配置X-Forwarded-For这个头。</p>
-<p>grpc取x-forwarded-for的方法:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">md, ok := metadata.FromIncomingContext(ctx)</span><br><span class="line">if !ok &#123;</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line">ips, ok := md[&quot;x-forwarded-for&quot;]</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>kubernetes</tag>
-        <tag>nginx</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>vue+element使用upload组件动态action</title>
     <url>/2019/01/11/vue+element-ui%E4%BD%BF%E7%94%A8upload%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6%E6%97%B6%E5%8A%A8%E6%80%81%E8%B5%8B%E5%80%BCaction/</url>
     <content><![CDATA[<p>vue+element-ui使用upload上传组件时动态赋值action问题</p>
@@ -75,14 +37,51 @@
       </tags>
   </entry>
   <entry>
+    <title>通过ingress-nginx转发后的服务获取访问客户端的真实IP地址</title>
+    <url>/2021/09/26/%E9%80%9A%E8%BF%87ingress-nginx%E8%BD%AC%E5%8F%91%E5%90%8E%E7%9A%84%E6%9C%8D%E5%8A%A1%E8%8E%B7%E5%8F%96%E8%AE%BF%E9%97%AE%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E7%9C%9F%E5%AE%9EIP%E5%9C%B0%E5%9D%80/</url>
+    <content><![CDATA[<p>nginx获取客户端真实IP的配置一般用</p>
+<p>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</p>
+<a id="more"></a>
+<p>这个配置项（如果要获取每一级的完整链路，每一级代理都得加这个配置项）。详细参考：<a href="https://www.cnblogs.com/diaosir/p/6890825.html" target="_blank" rel="noopener">https://www.cnblogs.com/diaosir/p/6890825.html</a></p>
+<p>本地调试服务可以正确拿到客户端真实IP，但是通过k8s的ingress转发之后，拿到的却只有ingress网关的IP。</p>
+<p><img src="/images/image-20210126084610905.png" alt="image-20210126084610905"></p>
+<p>可以先进容器里面查看ingress-nginx的配置：</p>
+<p><img src="/images/image-20210126083439015.png" alt="image-20210126083439015"></p>
+<p>一般x-forwarded-for头都是$remote_addr，这只能获取到ingress代理的IP。</p>
+<p>服务里面拿到的IP为：</p>
+<p>[10.244.0.0, 10.244.2.2]</p>
+<p><img src="/images/image-20210126084610906.png" alt="img"></p>
+<p>因为服务里面取的是x-forwarded-for这个头，所以要将ingress-nginx的x-forwarded-for修改为$proxy_add_x_forwarded_for</p>
+<p>编辑ingress的configmap：</p>
+<p>sudo kubectl -n ingress-nginx edit cm nginx-configuration</p>
+<p>data根元素下加入：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">data:</span></span><br><span class="line"><span class="attr">  compute-full-forwarded-for:</span> <span class="string">"true"</span></span><br><span class="line"><span class="attr">  enable-underscores-in-headers:</span> <span class="string">"true"</span></span><br><span class="line"><span class="attr">  use-forwarded-headers:</span> <span class="string">"true"</span></span><br><span class="line"><span class="attr">  use-proxy-protocol:</span> <span class="string">"true"</span></span><br></pre></td></tr></table></figure>
+<p>保存会立即生效。再次查看ingress容器中的nginx配置文件，发现头已变成：</p>
+<p><img src="/images/image-20210126084058660.png" alt="image-20210126084058660"></p>
+<p>服务打印出的日志已变为：</p>
+<blockquote>
+<p>2021/01/26 08:30:27 interceptor.go:63: x-forwarded-for value is [101.95.178.162, 127.0.0.1, 10.244.0.0, 10.244.2.2]</p>
+</blockquote>
+<p>最前面一个就是客户端的ip，如果没有的话，说明客户端到第一级代理的地方没有配置X-Forwarded-For这个头。</p>
+<p>grpc取x-forwarded-for的方法:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">md, ok := metadata.FromIncomingContext(ctx)</span><br><span class="line">if !ok &#123;</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line">ips, ok := md[&quot;x-forwarded-for&quot;]</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>kubernetes</tag>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ffmpeg视频切片转码合并</title>
     <url>/2019/01/10/%E5%A4%A7%E8%A7%86%E9%A2%91%E7%9A%84%E5%88%87%E7%89%87%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E8%BD%AC%E7%A0%81/</url>
-    <content><![CDATA[<h1 id="ffmpeg视频切片转码合并"><a href="#ffmpeg视频切片转码合并" class="headerlink" title="ffmpeg视频切片转码合并"></a>ffmpeg视频切片转码合并</h1><ul>
-<li><p><strong>第一步</strong>：原视频切片</p>
-<a id="more"></a>
-</li>
+    <content><![CDATA[<ul>
+<li><strong>第一步</strong>：原视频切片</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p><strong>-segment_time</strong>: 指定每个切片的大致时长(s)，默认为2</p>
 <p><strong>-reset_timestamps</strong>: 设置每个切片的时间戳从零开始，不设置的话播放起来会有问题</p>
 <p><strong>-map</strong>: 指定提取的通道，比如某些多音轨的视频就会有多个音轨通道，一般0:0和0:1是默认的audio通道和video通道</p>

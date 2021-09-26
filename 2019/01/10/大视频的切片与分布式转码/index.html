@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="ffmpeg视频切片转码合并 第一步：原视频切片">
+  <meta name="description" content="第一步：原视频切片  1ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov">
 <meta name="keywords" content="ffmpeg,转码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ffmpeg视频切片转码合并">
 <meta property="og:url" content="http://yoursite.com/2019/01/10/大视频的切片与分布式转码/index.html">
 <meta property="og:site_name" content="Younger&#39;s Blog">
-<meta property="og:description" content="ffmpeg视频切片转码合并 第一步：原视频切片">
+<meta property="og:description" content="第一步：原视频切片  1ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/images/1540950217348.png">
 <meta property="og:image" content="http://yoursite.com/images/1540953744501.png">
-<meta property="og:updated_time" content="2021-09-26T04:05:54.598Z">
+<meta property="og:updated_time" content="2021-09-26T06:10:50.378Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ffmpeg视频切片转码合并">
-<meta name="twitter:description" content="ffmpeg视频切片转码合并 第一步：原视频切片">
+<meta name="twitter:description" content="第一步：原视频切片  1ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov">
 <meta name="twitter:image" content="http://yoursite.com/images/1540950217348.png">
 
 <link rel="canonical" href="http://yoursite.com/2019/01/10/大视频的切片与分布式转码/">
@@ -225,7 +225,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-26 12:05:54" itemprop="dateModified" datetime="2021-09-26T12:05:54+08:00">2021-09-26</time>
+                <time title="Modified: 2021-09-26 14:10:50" itemprop="dateModified" datetime="2021-09-26T14:10:50+08:00">2021-09-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,12 +255,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="ffmpeg视频切片转码合并"><a href="#ffmpeg视频切片转码合并" class="headerlink" title="ffmpeg视频切片转码合并"></a>ffmpeg视频切片转码合并</h1><ul>
-<li><p><strong>第一步</strong>：原视频切片</p>
-<a id="more"></a>
-</li>
+        <ul>
+<li><strong>第一步</strong>：原视频切片</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p><strong>-segment_time</strong>: 指定每个切片的大致时长(s)，默认为2</p>
 <p><strong>-reset_timestamps</strong>: 设置每个切片的时间戳从零开始，不设置的话播放起来会有问题</p>
 <p><strong>-map</strong>: 指定提取的通道，比如某些多音轨的视频就会有多个音轨通道，一般0:0和0:1是默认的audio通道和video通道</p>
@@ -403,7 +402,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ffmpeg视频切片转码合并"><span class="nav-number">1.</span> <span class="nav-text">ffmpeg视频切片转码合并</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一、-ss-t的使用："><span class="nav-number">1.0.0.1.</span> <span class="nav-text">第一、-ss -t的使用：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二、-f-segment的使用："><span class="nav-number">1.0.0.2.</span> <span class="nav-text">第二、-f segment的使用：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#法一："><span class="nav-number">1.0.0.2.1.</span> <span class="nav-text">法一：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#法二："><span class="nav-number">1.0.0.2.2.</span> <span class="nav-text">法二：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#法三："><span class="nav-number">1.0.0.2.3.</span> <span class="nav-text">法三：</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一、-ss-t的使用："><span class="nav-number">1.</span> <span class="nav-text">第一、-ss -t的使用：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二、-f-segment的使用："><span class="nav-number">2.</span> <span class="nav-text">第二、-f segment的使用：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#法一："><span class="nav-number">2.1.</span> <span class="nav-text">法一：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#法二："><span class="nav-number">2.2.</span> <span class="nav-text">法二：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#法三："><span class="nav-number">2.3.</span> <span class="nav-text">法三：</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -436,6 +435,14 @@
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/younger0911" title="GitHub → https://github.com/younger0911" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chengyang0911@163.com" title="E-Mail → mailto:chengyang0911@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
 
 
 
