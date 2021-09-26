@@ -16,65 +16,6 @@
       </tags>
   </entry>
   <entry>
-    <title>vue+element使用upload组件动态action</title>
-    <url>/2019/01/11/vue+element-ui%E4%BD%BF%E7%94%A8upload%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6%E6%97%B6%E5%8A%A8%E6%80%81%E8%B5%8B%E5%80%BCaction/</url>
-    <content><![CDATA[<p>vue+element-ui使用upload上传组件时动态赋值action问题</p>
-<a id="more"></a>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">el-upload</span></span></span><br><span class="line"><span class="tag">           <span class="attr">name</span>=<span class="string">"files"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:action</span>=<span class="string">"upAct"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:headers</span>=<span class="string">"upHeader"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">list-type</span>=<span class="string">"picture-card"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-preview</span>=<span class="string">"handlePictureCardPreview"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-remove</span>=<span class="string">"handleRemove"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:before-remove</span>=<span class="string">"beforeRemove"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-success</span>=<span class="string">"showSaveSuccess"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-error</span>=<span class="string">"showSaveError"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:auto-upload</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:multiple</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:limit</span>=<span class="string">"10"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">ref</span>=<span class="string">"uploadF"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"el-icon-plus"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">el-upload</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">data()&#123;</span><br><span class="line">      <span class="keyword">return</span>&#123;</span><br><span class="line">      	upHeader: &#123;<span class="string">"Authorization"</span>: getCookie(<span class="string">"token"</span>)&#125;,</span><br><span class="line">        upAct: <span class="string">''</span>,</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">methods:&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">this</span>.upAct = <span class="string">"/api/store/upFiles?storeId="</span> + res.data.msg;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.$refs.uploadF.submit();</span><br><span class="line">    &#125;.bind(<span class="keyword">this</span>),<span class="number">500</span>)</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
-<p><strong>问题：</strong></p>
-<p>​    配置action后上传时会报错，action一直是空值。这是因为element的上传方法先执行，action的动态响应后执行。</p>
-<p><strong>现解决方法：</strong></p>
-<p>​    给提交动作加个延时，不然action一直是初始的空。</p>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>vue</tag>
-        <tag>element-ui</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>通过ingress-nginx转发后的服务获取访问客户端的真实IP地址</title>
-    <url>/2021/09/26/%E9%80%9A%E8%BF%87ingress-nginx%E8%BD%AC%E5%8F%91%E5%90%8E%E7%9A%84%E6%9C%8D%E5%8A%A1%E8%8E%B7%E5%8F%96%E8%AE%BF%E9%97%AE%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E7%9C%9F%E5%AE%9EIP%E5%9C%B0%E5%9D%80/</url>
-    <content><![CDATA[<p>nginx获取客户端真实IP的配置一般用</p>
-<p>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</p>
-<a id="more"></a>
-<p>这个配置项（如果要获取每一级的完整链路，每一级代理都得加这个配置项）。详细参考：<a href="https://www.cnblogs.com/diaosir/p/6890825.html" target="_blank" rel="noopener">https://www.cnblogs.com/diaosir/p/6890825.html</a></p>
-<p>本地调试服务可以正确拿到客户端真实IP，但是通过k8s的ingress转发之后，拿到的却只有ingress网关的IP。</p>
-<p><img src="/images/image-20210126084610905.png" alt="image-20210126084610905"></p>
-<p>可以先进容器里面查看ingress-nginx的配置：</p>
-<p><img src="/images/image-20210126083439015.png" alt="image-20210126083439015"></p>
-<p>一般x-forwarded-for头都是$remote_addr，这只能获取到ingress代理的IP。</p>
-<p>服务里面拿到的IP为：</p>
-<p>[10.244.0.0, 10.244.2.2]</p>
-<p><img src="/images/image-20210126084610906.png" alt="img"></p>
-<p>因为服务里面取的是x-forwarded-for这个头，所以要将ingress-nginx的x-forwarded-for修改为$proxy_add_x_forwarded_for</p>
-<p>编辑ingress的configmap：</p>
-<p>sudo kubectl -n ingress-nginx edit cm nginx-configuration</p>
-<p>data根元素下加入：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">data:</span></span><br><span class="line"><span class="attr">  compute-full-forwarded-for:</span> <span class="string">"true"</span></span><br><span class="line"><span class="attr">  enable-underscores-in-headers:</span> <span class="string">"true"</span></span><br><span class="line"><span class="attr">  use-forwarded-headers:</span> <span class="string">"true"</span></span><br><span class="line"><span class="attr">  use-proxy-protocol:</span> <span class="string">"true"</span></span><br></pre></td></tr></table></figure>
-<p>保存会立即生效。再次查看ingress容器中的nginx配置文件，发现头已变成：</p>
-<p><img src="/images/image-20210126084058660.png" alt="image-20210126084058660"></p>
-<p>服务打印出的日志已变为：</p>
-<blockquote>
-<p>2021/01/26 08:30:27 interceptor.go:63: x-forwarded-for value is [101.95.178.162, 127.0.0.1, 10.244.0.0, 10.244.2.2]</p>
-</blockquote>
-<p>最前面一个就是客户端的ip，如果没有的话，说明客户端到第一级代理的地方没有配置X-Forwarded-For这个头。</p>
-<p>grpc取x-forwarded-for的方法:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">md, ok := metadata.FromIncomingContext(ctx)</span><br><span class="line">if !ok &#123;</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line">ips, ok := md[&quot;x-forwarded-for&quot;]</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>kubernetes</tag>
-        <tag>nginx</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ffmpeg视频切片转码合并</title>
     <url>/2019/01/10/%E5%A4%A7%E8%A7%86%E9%A2%91%E7%9A%84%E5%88%87%E7%89%87%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E8%BD%AC%E7%A0%81/</url>
     <content><![CDATA[<ul>
@@ -150,6 +91,110 @@
       <tags>
         <tag>ffmpeg</tag>
         <tag>转码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue+element使用upload组件动态action</title>
+    <url>/2019/01/11/vue+element-ui%E4%BD%BF%E7%94%A8upload%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6%E6%97%B6%E5%8A%A8%E6%80%81%E8%B5%8B%E5%80%BCaction/</url>
+    <content><![CDATA[<p>vue+element-ui使用upload上传组件时动态赋值action问题</p>
+<a id="more"></a>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">el-upload</span></span></span><br><span class="line"><span class="tag">           <span class="attr">name</span>=<span class="string">"files"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:action</span>=<span class="string">"upAct"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:headers</span>=<span class="string">"upHeader"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">list-type</span>=<span class="string">"picture-card"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-preview</span>=<span class="string">"handlePictureCardPreview"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-remove</span>=<span class="string">"handleRemove"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:before-remove</span>=<span class="string">"beforeRemove"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-success</span>=<span class="string">"showSaveSuccess"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-error</span>=<span class="string">"showSaveError"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:auto-upload</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:multiple</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:limit</span>=<span class="string">"10"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">ref</span>=<span class="string">"uploadF"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"el-icon-plus"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">el-upload</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">data()&#123;</span><br><span class="line">      <span class="keyword">return</span>&#123;</span><br><span class="line">      	upHeader: &#123;<span class="string">"Authorization"</span>: getCookie(<span class="string">"token"</span>)&#125;,</span><br><span class="line">        upAct: <span class="string">''</span>,</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">methods:&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">this</span>.upAct = <span class="string">"/api/store/upFiles?storeId="</span> + res.data.msg;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.$refs.uploadF.submit();</span><br><span class="line">    &#125;.bind(<span class="keyword">this</span>),<span class="number">500</span>)</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p><strong>问题：</strong></p>
+<p>​    配置action后上传时会报错，action一直是空值。这是因为element的上传方法先执行，action的动态响应后执行。</p>
+<p><strong>现解决方法：</strong></p>
+<p>​    给提交动作加个延时，不然action一直是初始的空。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+        <tag>element-ui</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通过ingress-nginx转发后的服务获取访问客户端的真实IP地址</title>
+    <url>/2021/09/26/%E9%80%9A%E8%BF%87ingress-nginx%E8%BD%AC%E5%8F%91%E5%90%8E%E7%9A%84%E6%9C%8D%E5%8A%A1%E8%8E%B7%E5%8F%96%E8%AE%BF%E9%97%AE%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E7%9C%9F%E5%AE%9EIP%E5%9C%B0%E5%9D%80/</url>
+    <content><![CDATA[<p>nginx获取客户端真实IP的配置一般用</p>
+<p>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</p>
+<a id="more"></a>
+<p>这个配置项（如果要获取每一级的完整链路，每一级代理都得加这个配置项）。详细参考：<a href="https://www.cnblogs.com/diaosir/p/6890825.html" target="_blank" rel="noopener">https://www.cnblogs.com/diaosir/p/6890825.html</a></p>
+<p>本地调试服务可以正确拿到客户端真实IP，但是通过k8s的ingress转发之后，拿到的却只有ingress网关的IP。</p>
+<p><img src="/images/image-20210126084610905.png" alt="image-20210126084610905"></p>
+<p>可以先进容器里面查看ingress-nginx的配置：</p>
+<p><img src="/images/image-20210126083439015.png" alt="image-20210126083439015"></p>
+<p>一般x-forwarded-for头都是$remote_addr，这只能获取到ingress代理的IP。</p>
+<p>服务里面拿到的IP为：</p>
+<p>[10.244.0.0, 10.244.2.2]</p>
+<p><img src="/images/image-20210126084610906.png" alt="img"></p>
+<p>因为服务里面取的是x-forwarded-for这个头，所以要将ingress-nginx的x-forwarded-for修改为$proxy_add_x_forwarded_for</p>
+<p>编辑ingress的configmap：</p>
+<p>sudo kubectl -n ingress-nginx edit cm nginx-configuration</p>
+<p>data根元素下加入：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">data:</span></span><br><span class="line"><span class="attr">  compute-full-forwarded-for:</span> <span class="string">"true"</span></span><br><span class="line"><span class="attr">  enable-underscores-in-headers:</span> <span class="string">"true"</span></span><br><span class="line"><span class="attr">  use-forwarded-headers:</span> <span class="string">"true"</span></span><br><span class="line"><span class="attr">  use-proxy-protocol:</span> <span class="string">"true"</span></span><br></pre></td></tr></table></figure>
+<p>保存会立即生效。再次查看ingress容器中的nginx配置文件，发现头已变成：</p>
+<p><img src="/images/image-20210126084058660.png" alt="image-20210126084058660"></p>
+<p>服务打印出的日志已变为：</p>
+<blockquote>
+<p>2021/01/26 08:30:27 interceptor.go:63: x-forwarded-for value is [101.95.178.162, 127.0.0.1, 10.244.0.0, 10.244.2.2]</p>
+</blockquote>
+<p>最前面一个就是客户端的ip，如果没有的话，说明客户端到第一级代理的地方没有配置X-Forwarded-For这个头。</p>
+<p>grpc取x-forwarded-for的方法:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">md, ok := metadata.FromIncomingContext(ctx)</span><br><span class="line">if !ok &#123;</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line">ips, ok := md[&quot;x-forwarded-for&quot;]</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>容器</category>
+      </categories>
+      <tags>
+        <tag>kubernetes</tag>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>fabric8io kunernetes client 通过token建立访问</title>
+    <url>/2021/09/26/fabric8io%20kunernetes%20client%20%E9%80%9A%E8%BF%87token%E5%BB%BA%E7%AB%8B%E8%AE%BF%E9%97%AE/</url>
+    <content><![CDATA[<h3 id="一、-获取token："><a href="#一、-获取token：" class="headerlink" title="一、 获取token："></a>一、 获取token：</h3><h4 id="查看账号"><a href="#查看账号" class="headerlink" title="查看账号"></a>查看账号</h4><p><code>kubectl -n kube-system get sa</code></p>
+<a id="more"></a>
+<p><img src="/images/image-20200518155520647.png" alt="image-20200518155520647"></p>
+<h4 id="按照账号取得secret"><a href="#按照账号取得secret" class="headerlink" title="按照账号取得secret"></a>按照账号取得secret</h4><p><code>kubectl -n kube-system get sa admin-metrices -o yaml</code></p>
+<p><img src="/images/image-20200518155713836.png" alt="image-20200518155713836"></p>
+<h4 id="取得token并解码"><a href="#取得token并解码" class="headerlink" title="取得token并解码"></a>取得token并解码</h4><p><code>kubectl get secrets admin-metrices-token-mszpc -n kube-system -o yaml</code></p>
+<p><img src="/images/image-20200518155903430.png" alt="image-20200518155903430"></p>
+<p><code>kubectl get secret admin-metrices-token-mszpc -n kube-system -o jsonpath={&quot;.data.token&quot;} | base64 -d</code></p>
+<p><img src="/images/image-20200518160106736.png" alt="image-20200518160106736"></p>
+<h4 id="验证token是否有效"><a href="#验证token是否有效" class="headerlink" title="验证token是否有效"></a>验证token是否有效</h4><p><code>curl -k -H &#39;Authorization: Bearer ${token}&#39; https://${ip}:${port}/api</code></p>
+<p><img src="/images/image-20200518160353836.png" alt="image-20200518160353836"></p>
+<hr>
+<p>或者利用rbac脚本创建一个账号：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">scheduler-metrics-reader</span>  <span class="comment">#建立账号</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">kube-system</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ClusterRole</span>  <span class="comment"># 集群角色</span></span><br><span class="line"><span class="attr">metadata:</span>  <span class="comment"># 此处的 "namespace" 被省略掉是因为 ClusterRoles 是没有命名空间的。</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">metrics-reader</span></span><br><span class="line"><span class="attr">rules:</span></span><br><span class="line"><span class="attr">  - apiGroups:</span> <span class="string">["",</span> <span class="string">"metrics.k8s.io"</span><span class="string">]</span> <span class="comment"># "" 指定核心 API 组；"metrics.k8s.io" 获取metrics</span></span><br><span class="line"><span class="attr">    resources:</span> <span class="string">["nodes",</span> <span class="string">"pods"</span><span class="string">]</span>  <span class="comment"># 资源类型</span></span><br><span class="line"><span class="attr">    verbs:</span> <span class="string">["get",</span> <span class="string">"watch"</span><span class="string">,</span> <span class="string">"list"</span><span class="string">]</span>  <span class="comment">#权限</span></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ClusterRoleBinding</span> <span class="comment"># 此角色绑定使得用户 "scheduler-node-reader" 能够读取 "vcs" 命名空间中的 nodes</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">read-nodes</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">vcs</span></span><br><span class="line"><span class="attr">subjects:</span></span><br><span class="line"><span class="attr">  - kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">scheduler-metrics-reader</span> <span class="comment"># Name is case sensitive</span></span><br><span class="line"><span class="attr">    namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">roleRef:</span></span><br><span class="line"><span class="attr">  kind:</span> <span class="string">ClusterRole</span> <span class="comment">#this must be Role or ClusterRole</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">metrics-reader</span> <span class="comment"># 这里的名称必须与你想要绑定的 Role 或 ClusterRole 名称一致</span></span><br><span class="line"><span class="attr">  apiGroup:</span> <span class="string">rbac.authorization.k8s.io</span></span><br></pre></td></tr></table></figure>
+<p>执行：<code>kubectl apply -f rbac.yaml</code></p>
+<p>利用shell脚本一键获取token：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"></span><br><span class="line">info=$(sudo kubectl cluster-info)</span><br><span class="line">temp=$&#123;info#*at&#125;</span><br><span class="line">url=$&#123;temp%CoreDNS*&#125;</span><br><span class="line">echo "$url"</span><br><span class="line"></span><br><span class="line">name=$(sudo kubectl -n kube-system get sa scheduler-metrics-reader -o jsonpath=&#123;".secrets[0].name"&#125;)</span><br><span class="line">token=$(sudo kubectl get secret "$&#123;name&#125;" -n kube-system -o jsonpath=&#123;".data.token"&#125; | base64 -d)</span><br><span class="line">echo "$token"</span><br></pre></td></tr></table></figure>
+<h3 id="二、-访问集群API："><a href="#二、-访问集群API：" class="headerlink" title="二、 访问集群API："></a>二、 访问集群API：</h3><h4 id="使用https-github-com-fabric8io-kubernetes-client访问k8s"><a href="#使用https-github-com-fabric8io-kubernetes-client访问k8s" class="headerlink" title="使用https://github.com/fabric8io/kubernetes-client访问k8s"></a>使用<code>https://github.com/fabric8io/kubernetes-client</code>访问k8s</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ConfigBuilder builder = <span class="keyword">new</span> ConfigBuilder();</span><br><span class="line">builder.withTrustCerts(<span class="keyword">true</span>);</span><br><span class="line">builder.withMasterUrl(<span class="string">"https://localhost:6443"</span>);</span><br><span class="line">builder.withOauthToken(token);  <span class="comment">//解码后的token，不带Bearer</span></span><br><span class="line">Config config = builder.build();</span><br><span class="line"><span class="keyword">final</span> KubernetesClient client = <span class="keyword">new</span> DefaultKubernetesClient(config);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>附：</li>
+</ul>
+<p>maven依赖(具体版本看git上的Compatibility Matrix)</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">&lt;!--</span> <span class="string">kubernetes依赖</span> <span class="bullet">--&gt;</span></span><br><span class="line"><span class="string">&lt;dependency&gt;</span></span><br><span class="line">	<span class="string">&lt;groupId&gt;io.fabric8&lt;/groupId&gt;</span></span><br><span class="line">	<span class="string">&lt;artifactId&gt;kubernetes-client&lt;/artifactId&gt;</span></span><br><span class="line">	<span class="string">&lt;version&gt;$&#123;kubernetes.version&#125;&lt;/version&gt;</span></span><br><span class="line"><span class="string">&lt;/dependency&gt;</span></span><br><span class="line"><span class="string">&lt;dependency&gt;</span></span><br><span class="line">	<span class="string">&lt;groupId&gt;io.fabric8&lt;/groupId&gt;</span></span><br><span class="line">	<span class="string">&lt;artifactId&gt;kubernetes-model&lt;/artifactId&gt;</span></span><br><span class="line">	<span class="string">&lt;version&gt;$&#123;kubernetes.version&#125;&lt;/version&gt;</span></span><br><span class="line"><span class="string">&lt;/dependency&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>附2：</li>
+</ul>
+<p>按照pod的特定属性获取指定pod，例如根据pod的nodeName获取pod：</p>
+<p><img src="/images/image-20200609162122310.png" alt="image-20200609162122310"></p>
+<p>可以看到nodeName属性在pod的spec下，则找出该node下pod的列表（这里k8sclient根据上述生成，可以在springboot启动时生成到bean中）：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">PodList pods = k8sClient.pods().withField(<span class="string">"spec.nodeName"</span>, <span class="string">"192.168.0.152"</span>).list();</span><br></pre></td></tr></table></figure>
+<p>参考<br><a href="https://yq.aliyun.com/articles/672460" target="_blank" rel="noopener">k8s使用ServiceAccount Token的方式访问apiserver</a></p>
+]]></content>
+      <categories>
+        <category>后端</category>
+        <category>容器</category>
+      </categories>
+      <tags>
+        <tag>kubernetes</tag>
+        <tag>kubernetes-client</tag>
       </tags>
   </entry>
 </search>
