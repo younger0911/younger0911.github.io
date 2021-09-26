@@ -20,18 +20,25 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Just write something">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Younger&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/tags/element-ui/index.html">
+  <meta name="description" content="通过ingress-nginx转发后的服务获取访问客户端的真实IP地址nginx获取客户端真实IP的配置一般用 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;">
+<meta name="keywords" content="kubernetes,nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过ingress-nginx转发后的服务获取访问客户端的真实IP地址">
+<meta property="og:url" content="http://yoursite.com/2021/09/26/通过ingress-nginx转发后的服务获取访问客户端的真实IP地址/index.html">
 <meta property="og:site_name" content="Younger&#39;s Blog">
-<meta property="og:description" content="Just write something">
+<meta property="og:description" content="通过ingress-nginx转发后的服务获取访问客户端的真实IP地址nginx获取客户端真实IP的配置一般用 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/images/image-20210126084610905.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20210126083439015.png">
+<meta property="og:image" content="http://yoursite.com/images/MT50$BZK626(HR%7B%5DX">
+<meta property="og:image" content="http://yoursite.com/images/image-20210126084058660.png">
+<meta property="og:updated_time" content="2021-09-26T04:45:00.339Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Younger&#39;s Blog">
-<meta name="twitter:description" content="Just write something">
+<meta name="twitter:title" content="通过ingress-nginx转发后的服务获取访问客户端的真实IP地址">
+<meta name="twitter:description" content="通过ingress-nginx转发后的服务获取访问客户端的真实IP地址nginx获取客户端真实IP的配置一般用 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;">
+<meta name="twitter:image" content="http://yoursite.com/images/image-20210126084610905.png">
 
-<link rel="canonical" href="http://yoursite.com/tags/element-ui/">
+<link rel="canonical" href="http://yoursite.com/2021/09/26/通过ingress-nginx转发后的服务获取访问客户端的真实IP地址/">
 
 
 <script id="page-configurations">
@@ -39,12 +46,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Tag: element-ui | Younger's Blog</title>
+  <title>通过ingress-nginx转发后的服务获取访问客户端的真实IP地址 | Younger's Blog</title>
   
 
 
@@ -183,51 +190,122 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">element-ui
-          <small>Tag</small>
-        </h2>
-      </div>
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/09/26/通过ingress-nginx转发后的服务获取访问客户端的真实IP地址/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Younger">
+      <meta itemprop="description" content="Just write something">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Younger's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          通过ingress-nginx转发后的服务获取访问客户端的真实IP地址
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-09-26 12:40:00 / Modified: 12:45:00" itemprop="dateCreated datePublished" datetime="2021-09-26T12:40:00+08:00">2021-09-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/后端/" itemprop="url" rel="index"><span itemprop="name">后端</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2019</span>
+        <h2 id="通过ingress-nginx转发后的服务获取访问客户端的真实IP地址"><a href="#通过ingress-nginx转发后的服务获取访问客户端的真实IP地址" class="headerlink" title="通过ingress-nginx转发后的服务获取访问客户端的真实IP地址"></a>通过ingress-nginx转发后的服务获取访问客户端的真实IP地址</h2><p>nginx获取客户端真实IP的配置一般用</p>
+<p>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</p>
+<a id="more"></a>
+<p>这个配置项（如果要获取每一级的完整链路，每一级代理都得加这个配置项）。详细参考：<a href="https://www.cnblogs.com/diaosir/p/6890825.html" target="_blank" rel="noopener">https://www.cnblogs.com/diaosir/p/6890825.html</a></p>
+<p>本地调试服务可以正确拿到客户端真实IP，但是通过k8s的ingress转发之后，拿到的却只有ingress网关的IP。</p>
+<p><img src="/images/image-20210126084610905.png" alt="image-20210126084610905"></p>
+<p>可以先进容器里面查看ingress-nginx的配置：</p>
+<p><img src="/images/image-20210126083439015.png" alt="image-20210126083439015"></p>
+<p>一般x-forwarded-for头都是$remote_addr，这只能获取到ingress代理的IP。</p>
+<p>服务里面拿到的IP为：</p>
+<p>[10.244.0.0, 10.244.2.2]</p>
+<p><img src="/images/MT50$BZK626(HR%7B%5DX" alt="img">FLWML.png)</p>
+<p>因为服务里面取的是x-forwarded-for这个头，所以要将ingress-nginx的x-forwarded-for修改为$proxy_add_x_forwarded_for</p>
+<p>编辑ingress的configmap：</p>
+<p>sudo kubectl -n ingress-nginx edit cm nginx-configuration</p>
+<p>data根元素下加入：</p>
+<p>data:<br>  compute-full-forwarded-for: “true”<br>  enable-underscores-in-headers: “true”<br>  use-forwarded-headers: “true”<br>  use-proxy-protocol: “true”</p>
+<p>保存会立即生效。再次查看ingress容器中的nginx配置文件，发现头已变成：</p>
+<p><img src="/images/image-20210126084058660.png" alt="image-20210126084058660"></p>
+<p>服务打印出的日志已变为：</p>
+<blockquote>
+<p>2021/01/26 08:30:27 interceptor.go:63: x-forwarded-for value is [101.95.178.162, 127.0.0.1, 10.244.0.0, 10.244.2.2]</p>
+</blockquote>
+<p>最前面一个就是客户端的ip，如果没有的话，说明客户端到第一级代理的地方没有配置X-Forwarded-For这个头。</p>
+<p>grpc取x-forwarded-for的方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">md, ok := metadata.FromIncomingContext(ctx)</span><br><span class="line">if !ok &#123;</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line">ips, ok := md[&quot;x-forwarded-for&quot;]</span><br></pre></td></tr></table></figure>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-01-11T15:06:28+08:00"
-              content="2019-01-11">
-          01-11
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/kubernetes/" rel="tag"># kubernetes</a>
+              <a href="/tags/nginx/" rel="tag"># nginx</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2019/01/11/vue+element-ui使用upload上传组件时动态赋值action/" itemprop="url">
-            <span itemprop="name">vue+element使用upload组件动态action</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/02/20/tomcat跨域配置/" rel="prev" title="tomcat跨域配置">
+      <i class="fa fa-chevron-left"></i> tomcat跨域配置
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -280,6 +358,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#通过ingress-nginx转发后的服务获取访问客户端的真实IP地址"><span class="nav-number">1.</span> <span class="nav-text">通过ingress-nginx转发后的服务获取访问客户端的真实IP地址</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
