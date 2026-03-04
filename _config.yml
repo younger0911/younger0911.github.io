@@ -85,5 +85,5 @@ search:
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: https://github.com/Younger0911/Younger0911.github.io
+  repository: git@github.com:Younger0911/Younger0911.github.io.git
   branch: master
