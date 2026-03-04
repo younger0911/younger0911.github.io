@@ -8,7 +8,13 @@ categories:
  - blog
 ---
 
-执行hexo d命令之后报错：
+执行hexo d命令之后报错Error: Spawn failed：
+
+
+
+<!-- more -->
+
+
 
 > FATAL Something's wrong. Maybe you can find the solution here: https://hexo.io/docs/troubleshooting.html
 >
@@ -19,12 +25,6 @@ categories:
 >   at ChildProcess.emit (node:events:508:20)
 >
 >   at ChildProcess._handle.onexit (node:internal/child_process:293:12)
-
-
-
-<!-- more -->
-
-
 
 生成 SSH 密钥（如果还没有）：
 
