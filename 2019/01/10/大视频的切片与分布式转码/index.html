@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 8.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="第一步：原视频切片  1ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ffmpeg视频切片转码合并">
+<meta property="og:url" content="http://yoursite.com/2019/01/10/%E5%A4%A7%E8%A7%86%E9%A2%91%E7%9A%84%E5%88%87%E7%89%87%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E8%BD%AC%E7%A0%81/index.html">
+<meta property="og:site_name" content="Younger&#39;s Blog">
+<meta property="og:description" content="第一步：原视频切片  1ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/1540950217348.png">
+<meta property="og:image" content="http://yoursite.com/images/1540953744501.png">
+<meta property="article:published_time" content="2019-01-10T07:06:28.000Z">
+<meta property="article:modified_time" content="2021-09-26T06:10:50.000Z">
+<meta property="article:author" content="Younger">
+<meta property="article:tag" content="ffmpeg">
+<meta property="article:tag" content="转码">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/1540950217348.png">
+
+<link rel="canonical" href="http://yoursite.com/2019/01/10/%E5%A4%A7%E8%A7%86%E9%A2%91%E7%9A%84%E5%88%87%E7%89%87%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E8%BD%AC%E7%A0%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>ffmpeg视频切片转码合并 | Younger's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Younger's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/10/%E5%A4%A7%E8%A7%86%E9%A2%91%E7%9A%84%E5%88%87%E7%89%87%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E8%BD%AC%E7%A0%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Younger">
+      <meta itemprop="description" content="Just write something">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Younger's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ffmpeg视频切片转码合并
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-01-10 15:06:28" itemprop="dateCreated datePublished" datetime="2019-01-10T15:06:28+08:00">2019-01-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-09-26 14:10:50" itemprop="dateModified" datetime="2021-09-26T14:10:50+08:00">2021-09-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AA%92%E4%BD%93/" itemprop="url" rel="index"><span itemprop="name">媒体</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ul>
+<li><strong>第一步</strong>：原视频切片</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -fflags +genpts -i input.mov -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.mov</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p><strong>-segment_time</strong>: 指定每个切片的大致时长(s)，默认为2</p>
+<p><strong>-reset_timestamps</strong>: 设置每个切片的时间戳从零开始，不设置的话播放起来会有问题</p>
+<p><strong>-map</strong>: 指定提取的通道，比如某些多音轨的视频就会有多个音轨通道，一般0:0和0:1是默认的audio通道和video通道</p>
+<p><strong>-fflags +genpts</strong>：The -fflags +genpts will regenerate the pts timestamps so it loops smoothly, otherwise the time sequence will be incorrect as it loops （-fflags + genpts将重新生成pts时间戳，使其顺利循环，否则时间序列将不正确。<em>解决.avi格式切片无效的问题</em>）</p>
+<p>目前测试过的视频格式有：mov、avi、mp4、flv、mkv。rmvb格式切片之后只有声音没图像。</p>
+<hr>
+<p>*注： 之前一直用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.avi -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.avi</span><br></pre></td></tr></table></figure>
+<p>切片，但是其他格式正常，avi却不成功，只会生成一片piece_000.avi。以下记录一下尝试过的解决办法：</p>
+<h4 id="第一、-ss-t的使用："><a href="#第一、-ss-t的使用：" class="headerlink" title="第一、-ss -t的使用："></a>第一、<code>-ss -t</code>的使用：</h4><p><img src="/images/1540950217348.png" alt=""></p>
+<ol>
+<li>-ss放在-i后面的话会比较慢，但是更准确（其实真的很慢，不推荐）</li>
+<li>-ss放在-i的前面是快寻找。</li>
+</ol>
+<p>实践结果：</p>
+<p>第1种方法在拼接处会出现掉帧（播放的时候声音正常，但是画面会卡住几秒）</p>
+<p>第2种方法在拼接处会出现重复帧（播放时声音正常，但是画面会重复）</p>
+<p>寻找解决办法：</p>
+<ol>
+<li><p>添加<code>-accurate_seek</code>，按照实践精确分割：    –失败</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -accurate_seek -ss 00:03:00 -i video.mp4 -t 60 -c copy -avoid_negative_ts 1 cut.mp4</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加<code>-noaccurate_seek</code>，会在时间附近的关键帧处进行分割，感觉很靠谱：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -noaccurate_seek -ss 00:03:00 -i video.mp4 -t 60 -c copy -avoid_negative_ts 1 cut.mp4</span><br></pre></td></tr></table></figure>
+<p>测试了几个视频，分割转码再合并，观察输出的视频肉眼确实没有看出掉帧问题，声音也正常。然而按照300s切割的视频，播放的时候时间会直接从4:57直接跳到5:00，略过约3s，时间跳三秒但是没看出来掉帧。所以感觉这个方法还是有问题。（此处只是简单测试，并没有深入研究，按理说按照关键帧进行分割是没有问题的，网上很多资料也是说按照关键帧分割）</p>
+</li>
+<li><p>难道<code>-noaccurate_seek</code>参数不靠谱？那么先手动找到视频的关键帧，然后在关键帧的位置分割呢。</p>
+<p>参考<code>ffprobe -show_frames -pretty input.avi</code>命令，输出视频关键帧信息，大致是这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">[FRAME]</span><br><span class="line">media_type=audio</span><br><span class="line">stream_index=1</span><br><span class="line">key_frame=1</span><br><span class="line">pkt_pts=42984</span><br><span class="line">pkt_pts_time=0:00:07.164000</span><br><span class="line">pkt_dts=42984</span><br><span class="line">pkt_dts_time=0:00:07.164000</span><br><span class="line">best_effort_timestamp=42984</span><br><span class="line">best_effort_timestamp_time=0:00:07.164000</span><br><span class="line">pkt_duration=216</span><br><span class="line">pkt_duration_time=0:00:00.036000</span><br><span class="line">pkt_pos=678738</span><br><span class="line">pkt_size=216 byte</span><br><span class="line">sample_fmt=fltp</span><br><span class="line">nb_samples=576</span><br><span class="line">channels=2</span><br><span class="line">channel_layout=stereo</span><br><span class="line">[/FRAME]</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>找到5分钟左右的关键帧所对应的dts时间：<code>pkt_dts_time=0:05:00.024000</code>，然后在此处进行分割：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -ss 0 -t dts_time -accurate_seek -i cat.avi -c copy -avoid_negative_ts 1 piece_00.avi</span><br><span class="line"></span><br><span class="line">ffmpeg -ss dts_time -t dur_time -accurate_seek -i cat.avi -c copy -avoid_negative_ts 1 piece_01.avi</span><br></pre></td></tr></table></figure>
+<p>然后再转码拼接，观察输出文件。结果和<code>-noaccurate_seek</code>效果一样，而且大视频找关键帧非常非常慢。</p>
+<p>这个实践对应一个简单的python实现，素材是一个7分多钟的avi视频，按照5分钟分割，不过代码写得特别简陋，而且参数都写死了，还是附一下吧：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess <span class="keyword">as</span> sp</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cut</span>():</span><br><span class="line">    sp1 = sp.Popen(<span class="string">&quot;ffprobe -show_frames -pretty cat.avi&quot;</span>, shell=<span class="literal">True</span>, stdout=sp.PIPE)</span><br><span class="line"></span><br><span class="line">    flag = <span class="literal">False</span></span><br><span class="line">    cur_time = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        line = sp1.stdout.readline().rstrip()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">str</span>(line).find(<span class="string">&quot;key_frame=0&quot;</span>) &gt;= <span class="number">0</span>:</span><br><span class="line">            flag = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">str</span>(line).find(<span class="string">&quot;key_frame=1&quot;</span>) &gt;= <span class="number">0</span>:</span><br><span class="line">            flag = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span> flag:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">str</span>(line).find(<span class="string">&quot;pkt_dts_time=&quot;</span>) &gt;= <span class="number">0</span>:</span><br><span class="line">                flag = <span class="literal">False</span></span><br><span class="line">                cur_time = parse_time(<span class="built_in">str</span>(line))</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">int</span>(cur_time[<span class="number">1</span>])*<span class="number">60</span> &gt;= <span class="number">300</span>:</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    piece_time = <span class="built_in">str</span>(cur_time[<span class="number">0</span>]) + <span class="string">&quot;:&quot;</span> + <span class="built_in">str</span>(cur_time[<span class="number">1</span>]) + <span class="string">&quot;:&quot;</span> + <span class="built_in">str</span>(cur_time[<span class="number">2</span>]) + <span class="string">&quot;.&quot;</span> + <span class="built_in">str</span>(cur_time[<span class="number">3</span>])[<span class="number">0</span>:<span class="number">3</span>]</span><br><span class="line">    c1 = sp.Popen(<span class="string">&quot;ffmpeg -ss 0 -t &quot;</span> + piece_time + <span class="string">&quot; -accurate_seek -i cat.avi -c copy -avoid_negative_ts 1 piece_00.avi&quot;</span>, shell=<span class="literal">True</span>)</span><br><span class="line">    c2 = sp.Popen(<span class="string">&quot;ffmpeg -ss &quot;</span> + piece_time + <span class="string">&quot; -t &quot;</span> + piece_time + <span class="string">&quot; -accurate_seek -i cat.avi -c copy -avoid_negative_ts 1 piece_01.avi&quot;</span>, shell=<span class="literal">True</span>)</span><br><span class="line">    c1.communicate()</span><br><span class="line">    c2.communicate()</span><br><span class="line"></span><br><span class="line">    c3 = sp.Popen(<span class="string">&quot;ffmpeg -i piece_00.avi -acodec copy -vcodec copy out0.mp4&quot;</span>, shell=<span class="literal">True</span>)</span><br><span class="line">    c4 = sp.Popen(<span class="string">&quot;ffmpeg -i piece_01.avi -acodec copy -vcodec copy out1.mp4&quot;</span>, shell=<span class="literal">True</span>)</span><br><span class="line">    c3.communicate()</span><br><span class="line">    c4.communicate()</span><br><span class="line"></span><br><span class="line">    c5 = sp.Popen(<span class="string">&quot;touch index.txt&quot;</span>, shell=<span class="literal">True</span>)</span><br><span class="line">    c5.communicate()</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&quot;index.txt&quot;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">    f.write(<span class="string">&quot;file &#x27;out0.mp4&#x27;\nfile &#x27;out1.mp4&#x27;&quot;</span>)</span><br><span class="line">    f.close()</span><br><span class="line">    sp.Popen(<span class="string">&quot;ffmpeg -y -f concat -i index.txt -c copy cat-out-1030.mp4&quot;</span>, shell=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">parse_time</span>(<span class="params">line</span>):</span><br><span class="line">    cur_time = re.findall(<span class="string">&#x27;(\d+)&#x27;</span>, line)</span><br><span class="line">    <span class="keyword">return</span> cur_time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    cut()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>到此，<code>-ss -t</code>的方式正式放弃了，真是各种问题。</p>
+</li>
+</ol>
+<h4 id="第二、-f-segment的使用："><a href="#第二、-f-segment的使用：" class="headerlink" title="第二、-f segment的使用："></a>第二、<code>-f segment</code>的使用：</h4><h5 id="法一："><a href="#法一：" class="headerlink" title="法一："></a>法一：</h5><p>.avi格式的视频切片失效，可以将其不重新编码转成.mp4格式再进行切片：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i input.avi -c copy input_new.mp4</span><br></pre></td></tr></table></figure>
+<p>​    此办法成功，因为用的-c copy速度还算可以，但是不能接受先转一次码。</p>
+<h5 id="法二："><a href="#法二：" class="headerlink" title="法二："></a>法二：</h5><p>添加<code>-re</code>    –失败</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -re -i input.avi -acodec copy -vcodec copy -f segment -segment_time 300 -reset_timestamps 1 -map 0:0 -map 0:1 piece_%03d.avi</span><br></pre></td></tr></table></figure>
+<h5 id="法三："><a href="#法三：" class="headerlink" title="法三："></a>法三：</h5><p>使用<code>-use_wallclock_as_timestamps 1</code>    –失败</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -use_wallclock_as_timestamps 1 -i input.avi -acodec copy -vcodec copy -f segment -segment_time 300 -map 0:0 -map 0:1 piece_%03d.avi</span><br></pre></td></tr></table></figure>
+<p>第二第三两种方法的参数网上都有解释，不赘述了。</p>
+<p>**官方文档中，-f segment还可以将视频生成m3u8格式，可用作HLS：</p>
+<p><img src="/images/1540953744501.png" alt=""></p>
+<hr>
+<ul>
+<li><strong>第二步</strong>：转码</li>
+</ul>
+<p>最简单的形式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i piece_000.mov -c copy out_000.mp4</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>第三步</strong>：合并</li>
+</ul>
+<p>新建一个所有分片的索引文件，例如index.txt，内容如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file &#x27;out_000.mp4&#x27;</span><br><span class="line">file &#x27;out_001.mp4&#x27;</span><br><span class="line">file &#x27;out_002.mp4&#x27;</span><br></pre></td></tr></table></figure>
+<p>最后执行以下命令将分片合并成一个完整视频：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -f concat -i index.txt -c copy output.mp4</span><br></pre></td></tr></table></figure>
+<p>转码和合并更具体的操作可参见官方文档。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ffmpeg/" rel="tag"># ffmpeg</a>
+              <a href="/tags/%E8%BD%AC%E7%A0%81/" rel="tag"># 转码</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2019/01/11/vue%20element-ui%E4%BD%BF%E7%94%A8upload%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6%E6%97%B6%E5%8A%A8%E6%80%81%E8%B5%8B%E5%80%BCaction/" rel="next" title="vue+element使用upload组件动态action">
+      vue+element使用upload组件动态action <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E3%80%81-ss-t%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">第一、-ss -t的使用：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E3%80%81-f-segment%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">第二、-f segment的使用：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%95%E4%B8%80%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">法一：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%95%E4%BA%8C%EF%BC%9A"><span class="nav-number">2.2.</span> <span class="nav-text">法二：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%95%E4%B8%89%EF%BC%9A"><span class="nav-number">2.3.</span> <span class="nav-text">法三：</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Younger"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Younger</p>
+  <div class="site-description" itemprop="description">Just write something</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/younger0911" title="GitHub → https://github.com/younger0911" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chengyang0911@163.com" title="E-Mail → mailto:chengyang0911@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Younger</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

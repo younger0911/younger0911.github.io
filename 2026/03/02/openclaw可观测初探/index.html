@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 8.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文档记录了如何启用和配置 OpenClaw 的 diagnostics-otel 模块，将 trace、metrics 和 logs 通过 OpenTelemetry OTLP&#x2F;HTTP 协议导出到 Jaeger 进行可视化分析。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="openclaw可观测初探">
+<meta property="og:url" content="http://yoursite.com/2026/03/02/openclaw%E5%8F%AF%E8%A7%82%E6%B5%8B%E5%88%9D%E6%8E%A2/index.html">
+<meta property="og:site_name" content="Younger&#39;s Blog">
+<meta property="og:description" content="本文档记录了如何启用和配置 OpenClaw 的 diagnostics-otel 模块，将 trace、metrics 和 logs 通过 OpenTelemetry OTLP&#x2F;HTTP 协议导出到 Jaeger 进行可视化分析。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/image-20260302210932739.png">
+<meta property="og:image" content="http://yoursite.com/images/image-20260302210859556.png">
+<meta property="article:published_time" content="2026-03-02T12:58:08.000Z">
+<meta property="article:modified_time" content="2026-03-04T02:33:59.953Z">
+<meta property="article:author" content="Younger">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="openclaw">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/image-20260302210932739.png">
+
+<link rel="canonical" href="http://yoursite.com/2026/03/02/openclaw%E5%8F%AF%E8%A7%82%E6%B5%8B%E5%88%9D%E6%8E%A2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>openclaw可观测初探 | Younger's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Younger's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2026/03/02/openclaw%E5%8F%AF%E8%A7%82%E6%B5%8B%E5%88%9D%E6%8E%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Younger">
+      <meta itemprop="description" content="Just write something">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Younger's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          openclaw可观测初探
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2026-03-02 20:58:08" itemprop="dateCreated datePublished" datetime="2026-03-02T20:58:08+08:00">2026-03-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2026-03-04 10:33:59" itemprop="dateModified" datetime="2026-03-04T10:33:59+08:00">2026-03-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AI/Observability/" itemprop="url" rel="index"><span itemprop="name">Observability</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本文档记录了如何启用和配置 OpenClaw 的 <code>diagnostics-otel</code> 模块，将 trace、metrics 和 logs 通过 OpenTelemetry OTLP/HTTP 协议导出到 Jaeger 进行可视化分析。</p>
+<span id="more"></span>
+<h2 id="1-启用diagnostics-otel模块"><a href="#1-启用diagnostics-otel模块" class="headerlink" title="1. 启用diagnostics-otel模块"></a>1. 启用diagnostics-otel模块</h2><p>openclaw.json，一般在/root/.openclaw目录</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;plugins&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;allow&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;diagnostics-otel&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;entries&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;diagnostics-otel&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;enabled&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;diagnostics&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;enabled&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;otel&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;enabled&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;endpoint&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://localhost:4318&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http/protobuf&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;serviceName&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openclaw&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;traces&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;metrics&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;logs&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;sampleRate&quot;</span><span class="punctuation">:</span> <span class="number">1.0</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;flushIntervalMs&quot;</span><span class="punctuation">:</span> <span class="number">5000</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="2-安装-OpenTelemetry-依赖"><a href="#2-安装-OpenTelemetry-依赖" class="headerlink" title="2. 安装 OpenTelemetry 依赖"></a>2. 安装 OpenTelemetry 依赖</h2><p>进入 diagnostics-otel 插件目录并安装依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/lib/node_modules/openclaw/extensions/diagnostics-otel</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<p><strong>OpenClaw 版本：</strong> 2026.2.24<br><strong>Jaeger 版本：</strong> v1.76.0</p>
+<p><strong>安装的依赖包包括（按照实际版本可能有变化）：</strong></p>
+<ul>
+<li><code>@opentelemetry/api</code> (^1.9.0)</li>
+<li><code>@opentelemetry/api-logs</code> (^0.212.0)</li>
+<li><code>@opentelemetry/exporter-logs-otlp-proto</code> (^0.212.0)</li>
+<li><code>@opentelemetry/exporter-metrics-otlp-proto</code> (^0.212.0)</li>
+<li><code>@opentelemetry/exporter-trace-otlp-proto</code> (^0.212.0)</li>
+<li><code>@opentelemetry/resources</code> (^2.5.1)</li>
+<li><code>@opentelemetry/sdk-logs</code> (^0.212.0)</li>
+<li><code>@opentelemetry/sdk-metrics</code> (^2.5.1)</li>
+<li><code>@opentelemetry/sdk-node</code> (^0.212.0)</li>
+<li><code>@opentelemetry/sdk-trace-base</code> (^2.5.1)</li>
+<li><code>@opentelemetry/semantic-conventions</code> (^1.39.0)</li>
+</ul>
+<h2 id="3-启动-Jaeger（OTLP-接收端）"><a href="#3-启动-Jaeger（OTLP-接收端）" class="headerlink" title="3. 启动 Jaeger（OTLP 接收端）"></a>3. 启动 Jaeger（OTLP 接收端）</h2><p>使用 Docker 启动 Jaeger All-in-One：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首次启动</span></span><br><span class="line">docker run -d --name jaeger \</span><br><span class="line">  -e COLLECTOR_OTLP_ENABLED=<span class="literal">true</span> \</span><br><span class="line">  -p 16686:16686 \</span><br><span class="line">  -p 4318:4318 \</span><br><span class="line">  jaegertracing/all-in-one:latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 后续启动（如果容器已存在）</span></span><br><span class="line">docker start jaeger</span><br></pre></td></tr></table></figure>
+<p><strong>端口说明：</strong></p>
+<ul>
+<li><code>16686</code>: Jaeger UI 访问端口</li>
+<li><code>4318</code>: OTLP/HTTP 接收端口（OpenClaw 发送数据到此端口）</li>
+</ul>
+<h2 id="4-调整刷新间隔"><a href="#4-调整刷新间隔" class="headerlink" title="4. 调整刷新间隔"></a>4. 调整刷新间隔</h2><p>编辑 <code>~/.openclaw/openclaw.json</code>，修改 <code>flushIntervalMs</code>：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;diagnostics&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;enabled&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;otel&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;enabled&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;endpoint&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://localhost:4318&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;protocol&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http/protobuf&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;serviceName&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openclaw&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;traces&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;metrics&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;logs&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;sampleRate&quot;</span><span class="punctuation">:</span> <span class="number">1.0</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;flushIntervalMs&quot;</span><span class="punctuation">:</span> <span class="number">5000</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p><strong>关键修改：</strong></p>
+<ul>
+<li><code>flushIntervalMs</code>: 从 60000ms 改为 5000ms（5秒）<ul>
+<li>生产环境建议使用 30000-60000ms</li>
+<li>开发/测试环境可以使用 5000ms 快速查看数据</li>
+</ul>
+</li>
+</ul>
+<h3 id="步骤-4：重启-Gateway"><a href="#步骤-4：重启-Gateway" class="headerlink" title="步骤 4：重启 Gateway"></a>步骤 4：重启 Gateway</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openclaw gateway restart</span><br></pre></td></tr></table></figure>
+<hr>
+<p>## </p>
+<h2 id="验证方法"><a href="#验证方法" class="headerlink" title="验证方法"></a>验证方法</h2><h3 id="1-检查-Gateway-日志"><a href="#1-检查-Gateway-日志" class="headerlink" title="1. 检查 Gateway 日志"></a>1. 检查 Gateway 日志</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openclaw logs --follow | grep -i <span class="string">&quot;diagnostics-otel&quot;</span></span><br></pre></td></tr></table></figure>
+<p><strong>期望输出：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diagnostics-otel: logs exporter enabled (OTLP/Protobuf)</span><br></pre></td></tr></table></figure>
+<h3 id="2-检查-Jaeger-服务列表"><a href="#2-检查-Jaeger-服务列表" class="headerlink" title="2. 检查 Jaeger 服务列表"></a>2. 检查 Jaeger 服务列表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -s http://localhost:16686/api/services</span><br></pre></td></tr></table></figure>
+<p><strong>期望输出：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;data&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="string">&quot;jaeger-all-in-one&quot;</span><span class="punctuation">,</span><span class="string">&quot;openclaw&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="attr">&quot;total&quot;</span><span class="punctuation">:</span><span class="number">2</span><span class="punctuation">,</span>...<span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-查看-Trace-数据"><a href="#3-查看-Trace-数据" class="headerlink" title="3. 查看 Trace 数据"></a>3. 查看 Trace 数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -s <span class="string">&quot;http://localhost:16686/api/traces?service=openclaw&amp;limit=5&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-访问-Jaeger-UI"><a href="#4-访问-Jaeger-UI" class="headerlink" title="4. 访问 Jaeger UI"></a>4. 访问 Jaeger UI</h3><p>打开浏览器访问：<strong><a href="http://localhost:16686">http://localhost:16686</a></strong></p>
+<ul>
+<li>Service: 选择 <code>openclaw</code></li>
+<li>Operation: 可查看 <code>openclaw.model.usage</code>, <code>openclaw.session.stuck</code> 等</li>
+</ul>
+<p><img src="/images/image-20260302210932739.png" alt="image-20260302210932739"></p>
+<p><img src="/images/image-20260302210859556.png" alt="image-20260302210859556"></p>
+<hr>
+<h2 id="导出的数据类型"><a href="#导出的数据类型" class="headerlink" title="导出的数据类型"></a>导出的数据类型</h2><h3 id="Traces（调用链）"><a href="#Traces（调用链）" class="headerlink" title="Traces（调用链）"></a>Traces（调用链）</h3><table>
+<thead>
+<tr>
+<th>Span 名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>openclaw.model.usage</code></td>
+<td>模型调用（token、成本、时长）</td>
+</tr>
+<tr>
+<td><code>openclaw.webhook.processed</code></td>
+<td>Webhook 处理</td>
+</tr>
+<tr>
+<td><code>openclaw.webhook.error</code></td>
+<td>Webhook 错误</td>
+</tr>
+<tr>
+<td><code>openclaw.message.processed</code></td>
+<td>消息处理</td>
+</tr>
+<tr>
+<td><code>openclaw.session.stuck</code></td>
+<td>Session 卡住事件</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Metrics（指标）"><a href="#Metrics（指标）" class="headerlink" title="Metrics（指标）"></a>Metrics（指标）</h3><table>
+<thead>
+<tr>
+<th>指标名</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>openclaw.tokens</code></td>
+<td>Counter</td>
+<td>Token 使用量（按类型）</td>
+</tr>
+<tr>
+<td><code>openclaw.cost.usd</code></td>
+<td>Counter</td>
+<td>模型调用成本（美元）</td>
+</tr>
+<tr>
+<td><code>openclaw.run.duration_ms</code></td>
+<td>Histogram</td>
+<td>运行时长</td>
+</tr>
+<tr>
+<td><code>openclaw.context.tokens</code></td>
+<td>Histogram</td>
+<td>上下文窗口使用</td>
+</tr>
+<tr>
+<td><code>openclaw.webhook.received</code></td>
+<td>Counter</td>
+<td>收到的 webhook 数</td>
+</tr>
+<tr>
+<td><code>openclaw.webhook.error</code></td>
+<td>Counter</td>
+<td>Webhook 错误数</td>
+</tr>
+<tr>
+<td><code>openclaw.queue.depth</code></td>
+<td>Histogram</td>
+<td>队列深度</td>
+</tr>
+<tr>
+<td><code>openclaw.session.stuck</code></td>
+<td>Counter</td>
+<td>卡住 session 数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Logs（日志）"><a href="#Logs（日志）" class="headerlink" title="Logs（日志）"></a>Logs（日志）</h3><ul>
+<li>通过 OTLP 导出到 <code>http://localhost:4318/v1/logs</code></li>
+<li>包含所有 OpenClaw 日志的结构化数据</li>
+</ul>
+<hr>
+<h2 id="故障排除"><a href="#故障排除" class="headerlink" title="故障排除"></a>故障排除</h2><h3 id="问题-1：Jaeger-中没有数据"><a href="#问题-1：Jaeger-中没有数据" class="headerlink" title="问题 1：Jaeger 中没有数据"></a>问题 1：Jaeger 中没有数据</h3><p><strong>排查步骤：</strong></p>
+<ol>
+<li>检查 Jaeger 是否运行：<code>docker ps | grep jaeger</code></li>
+<li>检查 OTLP 端口是否可达：<code>curl http://localhost:4318/v1/traces</code></li>
+<li>检查 Gateway 日志是否有 exporter 启动信息</li>
+<li>确认 <code>flushIntervalMs</code> 不是太长</li>
+</ol>
+<h3 id="问题-2：Gateway-启动报错-Cannot-find-module-39-opentelemetry-api-39"><a href="#问题-2：Gateway-启动报错-Cannot-find-module-39-opentelemetry-api-39" class="headerlink" title="问题 2：Gateway 启动报错 Cannot find module &#39;@opentelemetry/api&#39;"></a>问题 2：Gateway 启动报错 <code>Cannot find module &#39;@opentelemetry/api&#39;</code></h3><p><strong>解决：</strong> 执行步骤 1 安装 npm 依赖</p>
+<h3 id="问题-3：只有-logs-没有-traces"><a href="#问题-3：只有-logs-没有-traces" class="headerlink" title="问题 3：只有 logs 没有 traces"></a>问题 3：只有 logs 没有 traces</h3><p><strong>原因：</strong> traces 和 metrics 需要 SDK 初始化成功</p>
+<p><strong>检查：</strong></p>
+<ul>
+<li>确认 <code>traces: true</code> 和 <code>metrics: true</code> 已配置</li>
+<li>查看 Gateway 启动日志是否有 SDK 错误</li>
+</ul>
+<hr>
+<h2 id="生产环境建议"><a href="#生产环境建议" class="headerlink" title="生产环境建议"></a>生产环境建议</h2><h3 id="1-采样率调整"><a href="#1-采样率调整" class="headerlink" title="1. 采样率调整"></a>1. 采样率调整</h3><p>高流量环境建议降低采样率：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;sampleRate&quot;</span><span class="punctuation">:</span> <span class="number">0.1</span>  <span class="comment">// 只采集 10% 的 trace</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-刷新间隔"><a href="#2-刷新间隔" class="headerlink" title="2. 刷新间隔"></a>2. 刷新间隔</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;flushIntervalMs&quot;</span><span class="punctuation">:</span> <span class="number">60000</span>  <span class="comment">// 60秒，减少网络开销</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-使用-OpenTelemetry-Collector"><a href="#3-使用-OpenTelemetry-Collector" class="headerlink" title="3. 使用 OpenTelemetry Collector"></a>3. 使用 OpenTelemetry Collector</h3><p>生产环境建议使用 Collector 而非直接发送到 Jaeger：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># collector-config.yaml</span></span><br><span class="line"><span class="attr">receivers:</span></span><br><span class="line">  <span class="attr">otlp:</span></span><br><span class="line">    <span class="attr">protocols:</span></span><br><span class="line">      <span class="attr">http:</span></span><br><span class="line">        <span class="attr">endpoint:</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span><span class="string">:4318</span></span><br><span class="line"></span><br><span class="line"><span class="attr">exporters:</span></span><br><span class="line">  <span class="attr">jaeger:</span></span><br><span class="line">    <span class="attr">endpoint:</span> <span class="string">jaeger:14250</span></span><br><span class="line">    <span class="attr">tls:</span></span><br><span class="line">      <span class="attr">insecure:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">service:</span></span><br><span class="line">  <span class="attr">pipelines:</span></span><br><span class="line">    <span class="attr">traces:</span></span><br><span class="line">      <span class="attr">receivers:</span> [<span class="string">otlp</span>]</span><br><span class="line">      <span class="attr">exporters:</span> [<span class="string">jaeger</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="4-环境变量配置"><a href="#4-环境变量配置" class="headerlink" title="4. 环境变量配置"></a>4. 环境变量配置</h3><p>可以通过环境变量覆盖配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318</span><br><span class="line"><span class="built_in">export</span> OTEL_SERVICE_NAME=openclaw-production</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://docs.openclaw.ai/logging">OpenClaw Diagnostics 文档</a></li>
+<li><a href="https://www.jaegertracing.io/docs/">Jaeger 文档</a></li>
+<li><a href="https://opentelemetry.io/docs/">OpenTelemetry 文档</a></li>
+</ul>
+<hr>
+<h2 id="附录：快速检查清单"><a href="#附录：快速检查清单" class="headerlink" title="附录：快速检查清单"></a>附录：快速检查清单</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 检查依赖是否安装</span></span><br><span class="line"><span class="built_in">ls</span> /usr/lib/node_modules/openclaw/extensions/diagnostics-otel/node_modules/@opentelemetry/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 检查 Jaeger 是否运行</span></span><br><span class="line">docker ps | grep jaeger</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 检查 OTLP 端口</span></span><br><span class="line">curl http://localhost:4318/v1/traces</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 检查 Gateway 是否发送数据</span></span><br><span class="line">curl http://localhost:16686/api/services | grep openclaw</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 查看最近 trace</span></span><br><span class="line">curl <span class="string">&quot;http://localhost:16686/api/traces?service=openclaw&amp;limit=1&quot;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/openclaw/" rel="tag"># openclaw</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/26/fabric8io%20kunernetes%20client%20%E9%80%9A%E8%BF%87token%E5%BB%BA%E7%AB%8B%E8%AE%BF%E9%97%AE/" rel="prev" title="fabric8io kunernetes client 通过token建立访问">
+      <i class="fa fa-chevron-left"></i> fabric8io kunernetes client 通过token建立访问
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2026/03/04/test-md/" rel="next" title="test.md">
+      test.md <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%90%AF%E7%94%A8diagnostics-otel%E6%A8%A1%E5%9D%97"><span class="nav-number">1.</span> <span class="nav-text">1. 启用diagnostics-otel模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85-OpenTelemetry-%E4%BE%9D%E8%B5%96"><span class="nav-number">2.</span> <span class="nav-text">2. 安装 OpenTelemetry 依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%90%AF%E5%8A%A8-Jaeger%EF%BC%88OTLP-%E6%8E%A5%E6%94%B6%E7%AB%AF%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">3. 启动 Jaeger（OTLP 接收端）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E8%B0%83%E6%95%B4%E5%88%B7%E6%96%B0%E9%97%B4%E9%9A%94"><span class="nav-number">4.</span> <span class="nav-text">4. 调整刷新间隔</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4-4%EF%BC%9A%E9%87%8D%E5%90%AF-Gateway"><span class="nav-number">4.1.</span> <span class="nav-text">步骤 4：重启 Gateway</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">验证方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%A3%80%E6%9F%A5-Gateway-%E6%97%A5%E5%BF%97"><span class="nav-number">5.1.</span> <span class="nav-text">1. 检查 Gateway 日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%A3%80%E6%9F%A5-Jaeger-%E6%9C%8D%E5%8A%A1%E5%88%97%E8%A1%A8"><span class="nav-number">5.2.</span> <span class="nav-text">2. 检查 Jaeger 服务列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%9F%A5%E7%9C%8B-Trace-%E6%95%B0%E6%8D%AE"><span class="nav-number">5.3.</span> <span class="nav-text">3. 查看 Trace 数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%AE%BF%E9%97%AE-Jaeger-UI"><span class="nav-number">5.4.</span> <span class="nav-text">4. 访问 Jaeger UI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">6.</span> <span class="nav-text">导出的数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Traces%EF%BC%88%E8%B0%83%E7%94%A8%E9%93%BE%EF%BC%89"><span class="nav-number">6.1.</span> <span class="nav-text">Traces（调用链）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Metrics%EF%BC%88%E6%8C%87%E6%A0%87%EF%BC%89"><span class="nav-number">6.2.</span> <span class="nav-text">Metrics（指标）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Logs%EF%BC%88%E6%97%A5%E5%BF%97%EF%BC%89"><span class="nav-number">6.3.</span> <span class="nav-text">Logs（日志）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4"><span class="nav-number">7.</span> <span class="nav-text">故障排除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98-1%EF%BC%9AJaeger-%E4%B8%AD%E6%B2%A1%E6%9C%89%E6%95%B0%E6%8D%AE"><span class="nav-number">7.1.</span> <span class="nav-text">问题 1：Jaeger 中没有数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98-2%EF%BC%9AGateway-%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99-Cannot-find-module-39-opentelemetry-api-39"><span class="nav-number">7.2.</span> <span class="nav-text">问题 2：Gateway 启动报错 Cannot find module &#39;@opentelemetry&#x2F;api&#39;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98-3%EF%BC%9A%E5%8F%AA%E6%9C%89-logs-%E6%B2%A1%E6%9C%89-traces"><span class="nav-number">7.3.</span> <span class="nav-text">问题 3：只有 logs 没有 traces</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E5%BB%BA%E8%AE%AE"><span class="nav-number">8.</span> <span class="nav-text">生产环境建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%87%87%E6%A0%B7%E7%8E%87%E8%B0%83%E6%95%B4"><span class="nav-number">8.1.</span> <span class="nav-text">1. 采样率调整</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%B7%E6%96%B0%E9%97%B4%E9%9A%94"><span class="nav-number">8.2.</span> <span class="nav-text">2. 刷新间隔</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8-OpenTelemetry-Collector"><span class="nav-number">8.3.</span> <span class="nav-text">3. 使用 OpenTelemetry Collector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE"><span class="nav-number">8.4.</span> <span class="nav-text">4. 环境变量配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">9.</span> <span class="nav-text">参考链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%BD%95%EF%BC%9A%E5%BF%AB%E9%80%9F%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="nav-number">10.</span> <span class="nav-text">附录：快速检查清单</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Younger"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Younger</p>
+  <div class="site-description" itemprop="description">Just write something</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/younger0911" title="GitHub → https://github.com/younger0911" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chengyang0911@163.com" title="E-Mail → mailto:chengyang0911@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Younger</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
