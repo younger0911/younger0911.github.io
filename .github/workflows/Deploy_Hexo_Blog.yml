@@ -1,0 +1,33 @@
+name: Deploy Hexo Blog
+
+on:
+  push:
+    branches:
+      - main # 当 main 分支有推送时触发
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # 或者你使用的版本
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build # 对应 hexo generate
+
+      - name: Deploy to master branch
+        # 这里需要使用一个 action 来将生成的 public 文件夹推送到 master 分支
+        # 例如使用 peaceiris/actions-gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public # hexo generate 生成的静态文件目录
+          publish_branch: master # 推送到 master 分支
