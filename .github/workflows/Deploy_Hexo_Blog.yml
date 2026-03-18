@@ -23,7 +23,9 @@ jobs:
 
       # 3. 安装依赖（包括 hexo 及相关插件）
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install strip-ansi@6.0.1   # 先安装 CJS 版本
+          npm install                    # 再安装项目其他依赖
 
       # 4. 直接使用 hexo 生成静态文件
       #    如果全局未安装 hexo-cli，可通过 npx 调用本地安装的 hexo
