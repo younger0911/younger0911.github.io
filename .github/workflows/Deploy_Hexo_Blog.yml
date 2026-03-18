@@ -1,33 +1,42 @@
 name: Deploy Hexo Blog
 
+# 当 main 分支有推送时触发（包括你通过 Enveloppe 推送的新文章）
 on:
   push:
     branches:
-      - main # 当 main 分支有推送时触发
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      # 1. 检出 main 分支的源码
+      - name: Checkout source
         uses: actions/checkout@v3
 
+      # 2. 设置 Node.js 环境（版本根据你的 Hexo 要求调整）
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # 或者你使用的版本
+          node-version: '18'   # 或 '16'、'20' 等
 
+      # 3. 安装依赖（包括 hexo 及相关插件）
       - name: Install dependencies
         run: npm install
 
-      - name: Build
-        run: npm run build # 对应 hexo generate
+      # 4. 直接使用 hexo 生成静态文件
+      #    如果全局未安装 hexo-cli，可通过 npx 调用本地安装的 hexo
+      - name: Generate static files with Hexo
+        run: npx hexo generate
 
+      # 5. 将生成的 public 文件夹部署到 master 分支
+      #    使用 peaceiris/actions-gh-pages 这个成熟 action
       - name: Deploy to master branch
-        # 这里需要使用一个 action 来将生成的 public 文件夹推送到 master 分支
-        # 例如使用 peaceiris/actions-gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public # hexo generate 生成的静态文件目录
-          publish_branch: master # 推送到 master 分支
+          publish_dir: ./public      # hexo generate 生成的目录
+          publish_branch: master      # 推送到 master 分支
+          # 如果希望保留 master 分支的历史记录，可以加下面的参数：
+          # force_orphan: false
