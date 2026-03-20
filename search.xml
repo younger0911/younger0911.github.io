@@ -47,55 +47,8 @@
   <entry>
     <title></title>
     <url>/2026/03/20/hello/</url>
-    <content><![CDATA[<p><img src="/images/hello/file-20260320154031262.png" alt="87"></p>
+    <content><![CDATA[<p><img src="/images/hello/img-20260320160019920.png" alt="106"></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>hexo部署报错Error Spawn failed</title>
-    <url>/2026/03/04/hexo%E9%83%A8%E7%BD%B2%E6%8A%A5%E9%94%99Error%20Spawn%20failed/</url>
-    <content><![CDATA[<p>执行hexo d命令之后报错Error: Spawn failed：</p>
-<span id="more"></span>
-<blockquote>
-<p>FATAL Something’s wrong. Maybe you can find the solution here: <a href="https://hexo.io/docs/troubleshooting.html">https://hexo.io/docs/troubleshooting.html</a></p>
-<p>Error: Spawn failed</p>
-<p>  at ChildProcess.<anonymous> (/Users/cy/Documents/Younger0911.github.io/node_modules/hexo-deployer-git/node_modules/hexo-util/lib/spawn.js:51:21)</anonymous></p>
-<p>  at ChildProcess.emit (node:events:508:20)</p>
-<p>  at ChildProcess._handle.onexit (node:internal/child_process:293:12)</p>
-</blockquote>
-<p>生成 SSH 密钥（如果还没有）：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t ed25519 -C <span class="string">&quot;your_email@example.com&quot;</span></span><br></pre></td></tr></table></figure>
-<p>将公钥（~/.ssh/id_ed25519.pub）添加到 GitHub SSH keys。</p>
-<p>测试连接：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
-<p>看到欢迎信息即成功。</p>
-<p>修改 _config.yml：</p>
-<p><strong>注意是git@</strong></p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:Younger0911/Younger0911.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span>   <span class="comment"># 与远程默认分支一致</span></span><br></pre></td></tr></table></figure>
-<p>再次部署：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>blog</category>
-      </categories>
-      <tags>
-        <tag>github</tag>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>tomcat跨域配置</title>
-    <url>/2019/02/20/tomcat%E8%B7%A8%E5%9F%9F%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>在conf下的web.xml中加入以下filter</p>
-<span id="more"></span>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.apache.catalina.filters.CorsFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.origins<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>null<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.methods<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>GET,POST,HEAD,OPTIONS,PUT<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.exposed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Access-Control-Allow-Origin,Access-Control-Allow-Credentials<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.support.credentials<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.preflight.maxage<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>10<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>tomcat</tag>
-        <tag>跨域</tag>
-      </tags>
   </entry>
   <entry>
     <title>openclaw可观测初探</title>
@@ -283,6 +236,38 @@
       </tags>
   </entry>
   <entry>
+    <title>hexo部署报错Error Spawn failed</title>
+    <url>/2026/03/04/hexo%E9%83%A8%E7%BD%B2%E6%8A%A5%E9%94%99Error%20Spawn%20failed/</url>
+    <content><![CDATA[<p>执行hexo d命令之后报错Error: Spawn failed：</p>
+<span id="more"></span>
+<blockquote>
+<p>FATAL Something’s wrong. Maybe you can find the solution here: <a href="https://hexo.io/docs/troubleshooting.html">https://hexo.io/docs/troubleshooting.html</a></p>
+<p>Error: Spawn failed</p>
+<p>  at ChildProcess.<anonymous> (/Users/cy/Documents/Younger0911.github.io/node_modules/hexo-deployer-git/node_modules/hexo-util/lib/spawn.js:51:21)</anonymous></p>
+<p>  at ChildProcess.emit (node:events:508:20)</p>
+<p>  at ChildProcess._handle.onexit (node:internal/child_process:293:12)</p>
+</blockquote>
+<p>生成 SSH 密钥（如果还没有）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t ed25519 -C <span class="string">&quot;your_email@example.com&quot;</span></span><br></pre></td></tr></table></figure>
+<p>将公钥（~/.ssh/id_ed25519.pub）添加到 GitHub SSH keys。</p>
+<p>测试连接：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+<p>看到欢迎信息即成功。</p>
+<p>修改 _config.yml：</p>
+<p><strong>注意是git@</strong></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:Younger0911/Younger0911.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span>   <span class="comment"># 与远程默认分支一致</span></span><br></pre></td></tr></table></figure>
+<p>再次部署：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>blog</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vue+element使用upload组件动态action</title>
     <url>/2019/01/11/vue%20element-ui%E4%BD%BF%E7%94%A8upload%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6%E6%97%B6%E5%8A%A8%E6%80%81%E8%B5%8B%E5%80%BCaction/</url>
     <content><![CDATA[<p>vue+element-ui使用upload上传组件时动态赋值action问题</p>
@@ -418,6 +403,21 @@
       <tags>
         <tag>kubernetes</tag>
         <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>tomcat跨域配置</title>
+    <url>/2019/02/20/tomcat%E8%B7%A8%E5%9F%9F%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>在conf下的web.xml中加入以下filter</p>
+<span id="more"></span>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.apache.catalina.filters.CorsFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.origins<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>null<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.methods<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>GET,POST,HEAD,OPTIONS,PUT<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.exposed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Access-Control-Allow-Origin,Access-Control-Allow-Credentials<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.support.credentials<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.preflight.maxage<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>10<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>tomcat</tag>
+        <tag>跨域</tag>
       </tags>
   </entry>
 </search>
