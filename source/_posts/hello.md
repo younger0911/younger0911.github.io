@@ -1,7 +1,4 @@
 ---
 share: "true"
-tags:
-  - test
 ---
-测试一下
-![](file-20260320123104754.png)
+![87](/images/hello/file-20260320154031262.png)

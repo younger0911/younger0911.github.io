@@ -87,3 +87,8 @@ deploy:
   type: git
   repository: git@github.com:Younger0911/Younger0911.github.io.git
   branch: master
+
+# hexo-image-link 配置
+image_link:
+  base: /images/          # 图片 URL 前缀
+  mode: default           # 默认模式，自动处理 post_asset_folder
