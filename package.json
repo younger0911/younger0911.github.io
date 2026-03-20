@@ -21,5 +21,8 @@
   },
   "overrides": {
     "strip-ansi": "6.0.1"
+  },
+  "devDependencies": {
+    "hexo-image-link": "^0.0.6"
   }
 }
