@@ -7,6 +7,38 @@
 ]]></content>
   </entry>
   <entry>
+    <title>hexo部署报错Error Spawn failed</title>
+    <url>/2026/03/04/hexo%E9%83%A8%E7%BD%B2%E6%8A%A5%E9%94%99Error%20Spawn%20failed/</url>
+    <content><![CDATA[<p>执行hexo d命令之后报错Error: Spawn failed：</p>
+<span id="more"></span>
+<blockquote>
+<p>FATAL Something’s wrong. Maybe you can find the solution here: <a href="https://hexo.io/docs/troubleshooting.html">https://hexo.io/docs/troubleshooting.html</a></p>
+<p>Error: Spawn failed</p>
+<p>  at ChildProcess.<anonymous> (/Users/cy/Documents/Younger0911.github.io/node_modules/hexo-deployer-git/node_modules/hexo-util/lib/spawn.js:51:21)</p>
+<p>  at ChildProcess.emit (node:events:508:20)</p>
+<p>  at ChildProcess._handle.onexit (node:internal/child_process:293:12)</p>
+</blockquote>
+<p>生成 SSH 密钥（如果还没有）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t ed25519 -C <span class="string">&quot;your_email@example.com&quot;</span></span><br></pre></td></tr></table></figure>
+<p>将公钥（~/.ssh/id_ed25519.pub）添加到 GitHub SSH keys。</p>
+<p>测试连接：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+<p>看到欢迎信息即成功。</p>
+<p>修改 _config.yml：</p>
+<p><strong>注意是git@</strong></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:Younger0911/Younger0911.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span>   <span class="comment"># 与远程默认分支一致</span></span><br></pre></td></tr></table></figure>
+<p>再次部署：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>blog</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>fabric8io kunernetes client 通过token建立访问</title>
     <url>/2021/09/26/fabric8io%20kunernetes%20client%20%E9%80%9A%E8%BF%87token%E5%BB%BA%E7%AB%8B%E8%AE%BF%E9%97%AE/</url>
     <content><![CDATA[<h3 id="一、-获取token："><a href="#一、-获取token：" class="headerlink" title="一、 获取token："></a>一、 获取token：</h3><h4 id="查看账号"><a href="#查看账号" class="headerlink" title="查看账号"></a>查看账号</h4><p><code>kubectl -n kube-system get sa</code></p>
@@ -48,53 +80,6 @@
       <tags>
         <tag>kubernetes</tag>
         <tag>kubernetes-client</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo部署报错Error Spawn failed</title>
-    <url>/2026/03/04/hexo%E9%83%A8%E7%BD%B2%E6%8A%A5%E9%94%99Error%20Spawn%20failed/</url>
-    <content><![CDATA[<p>执行hexo d命令之后报错Error: Spawn failed：</p>
-<span id="more"></span>
-<blockquote>
-<p>FATAL Something’s wrong. Maybe you can find the solution here: <a href="https://hexo.io/docs/troubleshooting.html">https://hexo.io/docs/troubleshooting.html</a></p>
-<p>Error: Spawn failed</p>
-<p>  at ChildProcess.<anonymous> (/Users/cy/Documents/Younger0911.github.io/node_modules/hexo-deployer-git/node_modules/hexo-util/lib/spawn.js:51:21)</p>
-<p>  at ChildProcess.emit (node:events:508:20)</p>
-<p>  at ChildProcess._handle.onexit (node:internal/child_process:293:12)</p>
-</blockquote>
-<p>生成 SSH 密钥（如果还没有）：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t ed25519 -C <span class="string">&quot;your_email@example.com&quot;</span></span><br></pre></td></tr></table></figure>
-<p>将公钥（~/.ssh/id_ed25519.pub）添加到 GitHub SSH keys。</p>
-<p>测试连接：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
-<p>看到欢迎信息即成功。</p>
-<p>修改 _config.yml：</p>
-<p><strong>注意是git@</strong></p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:Younger0911/Younger0911.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span>   <span class="comment"># 与远程默认分支一致</span></span><br></pre></td></tr></table></figure>
-<p>再次部署：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>blog</category>
-      </categories>
-      <tags>
-        <tag>github</tag>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>tomcat跨域配置</title>
-    <url>/2019/02/20/tomcat%E8%B7%A8%E5%9F%9F%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>在conf下的web.xml中加入以下filter</p>
-<span id="more"></span>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.apache.catalina.filters.CorsFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.origins<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>null<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.methods<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>GET,POST,HEAD,OPTIONS,PUT<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.exposed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Access-Control-Allow-Origin,Access-Control-Allow-Credentials<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.support.credentials<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.preflight.maxage<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>10<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>后端</category>
-      </categories>
-      <tags>
-        <tag>tomcat</tag>
-        <tag>跨域</tag>
       </tags>
   </entry>
   <entry>
@@ -283,6 +268,42 @@
       </tags>
   </entry>
   <entry>
+    <title>tomcat跨域配置</title>
+    <url>/2019/02/20/tomcat%E8%B7%A8%E5%9F%9F%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>在conf下的web.xml中加入以下filter</p>
+<span id="more"></span>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.apache.catalina.filters.CorsFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.origins<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>null<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.methods<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>GET,POST,HEAD,OPTIONS,PUT<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.exposed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Access-Control-Allow-Origin,Access-Control-Allow-Credentials<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.support.credentials<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.preflight.maxage<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>10<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>tomcat</tag>
+        <tag>跨域</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vue+element使用upload组件动态action</title>
+    <url>/2019/01/11/vue%20element-ui%E4%BD%BF%E7%94%A8upload%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6%E6%97%B6%E5%8A%A8%E6%80%81%E8%B5%8B%E5%80%BCaction/</url>
+    <content><![CDATA[<p>vue+element-ui使用upload上传组件时动态赋值action问题</p>
+<span id="more"></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">el-upload</span></span></span><br><span class="line"><span class="tag">           <span class="attr">name</span>=<span class="string">&quot;files&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:action</span>=<span class="string">&quot;upAct&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:headers</span>=<span class="string">&quot;upHeader&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">list-type</span>=<span class="string">&quot;picture-card&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-preview</span>=<span class="string">&quot;handlePictureCardPreview&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-remove</span>=<span class="string">&quot;handleRemove&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:before-remove</span>=<span class="string">&quot;beforeRemove&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-success</span>=<span class="string">&quot;showSaveSuccess&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-error</span>=<span class="string">&quot;showSaveError&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:auto-upload</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:multiple</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:limit</span>=<span class="string">&quot;10&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">ref</span>=<span class="string">&quot;uploadF&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;el-icon-plus&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">el-upload</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">data</span>(<span class="params"></span>)&#123;</span><br><span class="line">      <span class="keyword">return</span>&#123;</span><br><span class="line">      	<span class="attr">upHeader</span>: &#123;<span class="string">&quot;Authorization&quot;</span>: <span class="title function_">getCookie</span>(<span class="string">&quot;token&quot;</span>)&#125;,</span><br><span class="line">        <span class="attr">upAct</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">methods</span>:&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">upAct</span> = <span class="string">&quot;/api/store/upFiles?storeId=&quot;</span> + res.<span class="property">data</span>.<span class="property">msg</span>;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">$refs</span>.<span class="property">uploadF</span>.<span class="title function_">submit</span>();</span><br><span class="line">    &#125;.<span class="title function_">bind</span>(<span class="variable language_">this</span>),<span class="number">500</span>)</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p><strong>问题：</strong></p>
+<p>​    配置action后上传时会报错，action一直是空值。这是因为element的上传方法先执行，action的动态响应后执行。</p>
+<p><strong>现解决方法：</strong></p>
+<p>​    给提交动作加个延时，不然action一直是初始的空。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+        <tag>element-ui</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ffmpeg视频切片转码合并</title>
     <url>/2019/01/10/%E5%A4%A7%E8%A7%86%E9%A2%91%E7%9A%84%E5%88%87%E7%89%87%E4%B8%8E%E5%88%86%E5%B8%83%E5%BC%8F%E8%BD%AC%E7%A0%81/</url>
     <content><![CDATA[<ul>
@@ -358,27 +379,6 @@
       <tags>
         <tag>ffmpeg</tag>
         <tag>转码</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>vue+element使用upload组件动态action</title>
-    <url>/2019/01/11/vue%20element-ui%E4%BD%BF%E7%94%A8upload%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6%E6%97%B6%E5%8A%A8%E6%80%81%E8%B5%8B%E5%80%BCaction/</url>
-    <content><![CDATA[<p>vue+element-ui使用upload上传组件时动态赋值action问题</p>
-<span id="more"></span>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">el-upload</span></span></span><br><span class="line"><span class="tag">           <span class="attr">name</span>=<span class="string">&quot;files&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:action</span>=<span class="string">&quot;upAct&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:headers</span>=<span class="string">&quot;upHeader&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">list-type</span>=<span class="string">&quot;picture-card&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-preview</span>=<span class="string">&quot;handlePictureCardPreview&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-remove</span>=<span class="string">&quot;handleRemove&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:before-remove</span>=<span class="string">&quot;beforeRemove&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-success</span>=<span class="string">&quot;showSaveSuccess&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-error</span>=<span class="string">&quot;showSaveError&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:auto-upload</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:multiple</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:limit</span>=<span class="string">&quot;10&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">ref</span>=<span class="string">&quot;uploadF&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;el-icon-plus&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">el-upload</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">data</span>(<span class="params"></span>)&#123;</span><br><span class="line">      <span class="keyword">return</span>&#123;</span><br><span class="line">      	<span class="attr">upHeader</span>: &#123;<span class="string">&quot;Authorization&quot;</span>: <span class="title function_">getCookie</span>(<span class="string">&quot;token&quot;</span>)&#125;,</span><br><span class="line">        <span class="attr">upAct</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">methods</span>:&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">upAct</span> = <span class="string">&quot;/api/store/upFiles?storeId=&quot;</span> + res.<span class="property">data</span>.<span class="property">msg</span>;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">$refs</span>.<span class="property">uploadF</span>.<span class="title function_">submit</span>();</span><br><span class="line">    &#125;.<span class="title function_">bind</span>(<span class="variable language_">this</span>),<span class="number">500</span>)</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
-<p><strong>问题：</strong></p>
-<p>​    配置action后上传时会报错，action一直是空值。这是因为element的上传方法先执行，action的动态响应后执行。</p>
-<p><strong>现解决方法：</strong></p>
-<p>​    给提交动作加个延时，不然action一直是初始的空。</p>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>vue</tag>
-        <tag>element-ui</tag>
       </tags>
   </entry>
   <entry>
