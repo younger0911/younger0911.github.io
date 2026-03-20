@@ -47,7 +47,7 @@
   <entry>
     <title></title>
     <url>/2026/03/20/hello/</url>
-    <content><![CDATA[<p><img src="../mages/hello/file-20260320150305213.png" alt="132"></p>
+    <content><![CDATA[<p><img src="mages/hello/file-20260320151910956.png" alt="99"></p>
 ]]></content>
   </entry>
   <entry>
@@ -80,6 +80,21 @@
       <tags>
         <tag>github</tag>
         <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>tomcat跨域配置</title>
+    <url>/2019/02/20/tomcat%E8%B7%A8%E5%9F%9F%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>在conf下的web.xml中加入以下filter</p>
+<span id="more"></span>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.apache.catalina.filters.CorsFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.origins<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>null<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.methods<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>GET,POST,HEAD,OPTIONS,PUT<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.exposed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Access-Control-Allow-Origin,Access-Control-Allow-Credentials<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.support.credentials<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.preflight.maxage<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>10<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>tomcat</tag>
+        <tag>跨域</tag>
       </tags>
   </entry>
   <entry>
@@ -268,18 +283,63 @@
       </tags>
   </entry>
   <entry>
-    <title>tomcat跨域配置</title>
-    <url>/2019/02/20/tomcat%E8%B7%A8%E5%9F%9F%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>在conf下的web.xml中加入以下filter</p>
+    <title>vue+element使用upload组件动态action</title>
+    <url>/2019/01/11/vue%20element-ui%E4%BD%BF%E7%94%A8upload%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6%E6%97%B6%E5%8A%A8%E6%80%81%E8%B5%8B%E5%80%BCaction/</url>
+    <content><![CDATA[<p>vue+element-ui使用upload上传组件时动态赋值action问题</p>
 <span id="more"></span>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.apache.catalina.filters.CorsFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.origins<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>null<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.methods<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>GET,POST,HEAD,OPTIONS,PUT<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.exposed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Access-Control-Allow-Origin,Access-Control-Allow-Credentials<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.support.credentials<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.preflight.maxage<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>10<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">el-upload</span></span></span><br><span class="line"><span class="tag">           <span class="attr">name</span>=<span class="string">&quot;files&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:action</span>=<span class="string">&quot;upAct&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:headers</span>=<span class="string">&quot;upHeader&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">list-type</span>=<span class="string">&quot;picture-card&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-preview</span>=<span class="string">&quot;handlePictureCardPreview&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-remove</span>=<span class="string">&quot;handleRemove&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:before-remove</span>=<span class="string">&quot;beforeRemove&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-success</span>=<span class="string">&quot;showSaveSuccess&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-error</span>=<span class="string">&quot;showSaveError&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:auto-upload</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:multiple</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:limit</span>=<span class="string">&quot;10&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">ref</span>=<span class="string">&quot;uploadF&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;el-icon-plus&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">el-upload</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">data</span>(<span class="params"></span>)&#123;</span><br><span class="line">      <span class="keyword">return</span>&#123;</span><br><span class="line">      	<span class="attr">upHeader</span>: &#123;<span class="string">&quot;Authorization&quot;</span>: <span class="title function_">getCookie</span>(<span class="string">&quot;token&quot;</span>)&#125;,</span><br><span class="line">        <span class="attr">upAct</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">methods</span>:&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">upAct</span> = <span class="string">&quot;/api/store/upFiles?storeId=&quot;</span> + res.<span class="property">data</span>.<span class="property">msg</span>;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">$refs</span>.<span class="property">uploadF</span>.<span class="title function_">submit</span>();</span><br><span class="line">    &#125;.<span class="title function_">bind</span>(<span class="variable language_">this</span>),<span class="number">500</span>)</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p><strong>问题：</strong></p>
+<p>​    配置action后上传时会报错，action一直是空值。这是因为element的上传方法先执行，action的动态响应后执行。</p>
+<p><strong>现解决方法：</strong></p>
+<p>​    给提交动作加个延时，不然action一直是初始的空。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+        <tag>element-ui</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通过ingress-nginx转发后的服务获取访问客户端的真实IP地址</title>
+    <url>/2021/09/26/%E9%80%9A%E8%BF%87ingress-nginx%E8%BD%AC%E5%8F%91%E5%90%8E%E7%9A%84%E6%9C%8D%E5%8A%A1%E8%8E%B7%E5%8F%96%E8%AE%BF%E9%97%AE%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E7%9C%9F%E5%AE%9EIP%E5%9C%B0%E5%9D%80/</url>
+    <content><![CDATA[<p>nginx获取客户端真实IP的配置一般用</p>
+<p>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</p>
+<span id="more"></span>
+<p>这个配置项（如果要获取每一级的完整链路，每一级代理都得加这个配置项）。详细参考：<a href="https://www.cnblogs.com/diaosir/p/6890825.html">https://www.cnblogs.com/diaosir/p/6890825.html</a></p>
+<p>本地调试服务可以正确拿到客户端真实IP，但是通过k8s的ingress转发之后，拿到的却只有ingress网关的IP。</p>
+<p><img src="/images/image-20210126084610905.png" alt="image-20210126084610905"></p>
+<p>可以先进容器里面查看ingress-nginx的配置：</p>
+<p><img src="/images/image-20210126083439015.png" alt="image-20210126083439015"></p>
+<p>一般x-forwarded-for头都是$remote_addr，这只能获取到ingress代理的IP。</p>
+<p>服务里面拿到的IP为：</p>
+<p>[10.244.0.0, 10.244.2.2]</p>
+<p><img src="/images/image-20210126084610906.png" alt="img"></p>
+<p>因为服务里面取的是x-forwarded-for这个头，所以要将ingress-nginx的x-forwarded-for修改为$proxy_add_x_forwarded_for</p>
+<p>编辑ingress的configmap：</p>
+<p>sudo kubectl -n ingress-nginx edit cm nginx-configuration</p>
+<p>data根元素下加入：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">compute-full-forwarded-for:</span> <span class="string">&quot;true&quot;</span></span><br><span class="line">  <span class="attr">enable-underscores-in-headers:</span> <span class="string">&quot;true&quot;</span></span><br><span class="line">  <span class="attr">use-forwarded-headers:</span> <span class="string">&quot;true&quot;</span></span><br><span class="line">  <span class="attr">use-proxy-protocol:</span> <span class="string">&quot;true&quot;</span></span><br></pre></td></tr></table></figure>
+<p>保存会立即生效。再次查看ingress容器中的nginx配置文件，发现头已变成：</p>
+<p><img src="/images/image-20210126084058660.png" alt="image-20210126084058660"></p>
+<p>服务打印出的日志已变为：</p>
+<blockquote>
+<p>2021/01/26 08:30:27 interceptor.go:63: x-forwarded-for value is [101.95.178.162, 127.0.0.1, 10.244.0.0, 10.244.2.2]</p>
+</blockquote>
+<p>最前面一个就是客户端的ip，如果没有的话，说明客户端到第一级代理的地方没有配置X-Forwarded-For这个头。</p>
+<p>grpc取x-forwarded-for的方法:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">md, ok := metadata.FromIncomingContext(ctx)</span><br><span class="line">if !ok &#123;</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line">ips, ok := md[&quot;x-forwarded-for&quot;]</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>后端</category>
+        <category>容器</category>
       </categories>
       <tags>
-        <tag>tomcat</tag>
-        <tag>跨域</tag>
+        <tag>kubernetes</tag>
+        <tag>nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -358,66 +418,6 @@
       <tags>
         <tag>ffmpeg</tag>
         <tag>转码</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>vue+element使用upload组件动态action</title>
-    <url>/2019/01/11/vue%20element-ui%E4%BD%BF%E7%94%A8upload%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6%E6%97%B6%E5%8A%A8%E6%80%81%E8%B5%8B%E5%80%BCaction/</url>
-    <content><![CDATA[<p>vue+element-ui使用upload上传组件时动态赋值action问题</p>
-<span id="more"></span>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">el-upload</span></span></span><br><span class="line"><span class="tag">           <span class="attr">name</span>=<span class="string">&quot;files&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:action</span>=<span class="string">&quot;upAct&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:headers</span>=<span class="string">&quot;upHeader&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">list-type</span>=<span class="string">&quot;picture-card&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-preview</span>=<span class="string">&quot;handlePictureCardPreview&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-remove</span>=<span class="string">&quot;handleRemove&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:before-remove</span>=<span class="string">&quot;beforeRemove&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-success</span>=<span class="string">&quot;showSaveSuccess&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:on-error</span>=<span class="string">&quot;showSaveError&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:auto-upload</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:multiple</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">:limit</span>=<span class="string">&quot;10&quot;</span></span></span><br><span class="line"><span class="tag">           <span class="attr">ref</span>=<span class="string">&quot;uploadF&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;el-icon-plus&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">el-upload</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">data</span>(<span class="params"></span>)&#123;</span><br><span class="line">      <span class="keyword">return</span>&#123;</span><br><span class="line">      	<span class="attr">upHeader</span>: &#123;<span class="string">&quot;Authorization&quot;</span>: <span class="title function_">getCookie</span>(<span class="string">&quot;token&quot;</span>)&#125;,</span><br><span class="line">        <span class="attr">upAct</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">methods</span>:&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">upAct</span> = <span class="string">&quot;/api/store/upFiles?storeId=&quot;</span> + res.<span class="property">data</span>.<span class="property">msg</span>;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">$refs</span>.<span class="property">uploadF</span>.<span class="title function_">submit</span>();</span><br><span class="line">    &#125;.<span class="title function_">bind</span>(<span class="variable language_">this</span>),<span class="number">500</span>)</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
-<p><strong>问题：</strong></p>
-<p>​    配置action后上传时会报错，action一直是空值。这是因为element的上传方法先执行，action的动态响应后执行。</p>
-<p><strong>现解决方法：</strong></p>
-<p>​    给提交动作加个延时，不然action一直是初始的空。</p>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>vue</tag>
-        <tag>element-ui</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>通过ingress-nginx转发后的服务获取访问客户端的真实IP地址</title>
-    <url>/2021/09/26/%E9%80%9A%E8%BF%87ingress-nginx%E8%BD%AC%E5%8F%91%E5%90%8E%E7%9A%84%E6%9C%8D%E5%8A%A1%E8%8E%B7%E5%8F%96%E8%AE%BF%E9%97%AE%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E7%9C%9F%E5%AE%9EIP%E5%9C%B0%E5%9D%80/</url>
-    <content><![CDATA[<p>nginx获取客户端真实IP的配置一般用</p>
-<p>proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</p>
-<span id="more"></span>
-<p>这个配置项（如果要获取每一级的完整链路，每一级代理都得加这个配置项）。详细参考：<a href="https://www.cnblogs.com/diaosir/p/6890825.html">https://www.cnblogs.com/diaosir/p/6890825.html</a></p>
-<p>本地调试服务可以正确拿到客户端真实IP，但是通过k8s的ingress转发之后，拿到的却只有ingress网关的IP。</p>
-<p><img src="/images/image-20210126084610905.png" alt="image-20210126084610905"></p>
-<p>可以先进容器里面查看ingress-nginx的配置：</p>
-<p><img src="/images/image-20210126083439015.png" alt="image-20210126083439015"></p>
-<p>一般x-forwarded-for头都是$remote_addr，这只能获取到ingress代理的IP。</p>
-<p>服务里面拿到的IP为：</p>
-<p>[10.244.0.0, 10.244.2.2]</p>
-<p><img src="/images/image-20210126084610906.png" alt="img"></p>
-<p>因为服务里面取的是x-forwarded-for这个头，所以要将ingress-nginx的x-forwarded-for修改为$proxy_add_x_forwarded_for</p>
-<p>编辑ingress的configmap：</p>
-<p>sudo kubectl -n ingress-nginx edit cm nginx-configuration</p>
-<p>data根元素下加入：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">compute-full-forwarded-for:</span> <span class="string">&quot;true&quot;</span></span><br><span class="line">  <span class="attr">enable-underscores-in-headers:</span> <span class="string">&quot;true&quot;</span></span><br><span class="line">  <span class="attr">use-forwarded-headers:</span> <span class="string">&quot;true&quot;</span></span><br><span class="line">  <span class="attr">use-proxy-protocol:</span> <span class="string">&quot;true&quot;</span></span><br></pre></td></tr></table></figure>
-<p>保存会立即生效。再次查看ingress容器中的nginx配置文件，发现头已变成：</p>
-<p><img src="/images/image-20210126084058660.png" alt="image-20210126084058660"></p>
-<p>服务打印出的日志已变为：</p>
-<blockquote>
-<p>2021/01/26 08:30:27 interceptor.go:63: x-forwarded-for value is [101.95.178.162, 127.0.0.1, 10.244.0.0, 10.244.2.2]</p>
-</blockquote>
-<p>最前面一个就是客户端的ip，如果没有的话，说明客户端到第一级代理的地方没有配置X-Forwarded-For这个头。</p>
-<p>grpc取x-forwarded-for的方法:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">md, ok := metadata.FromIncomingContext(ctx)</span><br><span class="line">if !ok &#123;</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br><span class="line">ips, ok := md[&quot;x-forwarded-for&quot;]</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>后端</category>
-        <category>容器</category>
-      </categories>
-      <tags>
-        <tag>kubernetes</tag>
-        <tag>nginx</tag>
       </tags>
   </entry>
 </search>
