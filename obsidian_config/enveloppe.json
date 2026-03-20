@@ -1,0 +1,99 @@
+{
+  "github": {
+    "branch": "main",
+    "automaticallyMergePR": true,
+    "dryRun": {
+      "enable": false,
+      "folderName": "source/_posts"
+    },
+    "api": {
+      "tiersForApi": "Github Free/Pro/Team (default)",
+      "hostname": ""
+    },
+    "workflow": {
+      "commitMessage": "[PUBLISHER] Merge",
+      "name": ""
+    },
+    "verifiedRepo": true
+  },
+  "upload": {
+    "behavior": "fixed",
+    "defaultName": "source/_posts",
+    "rootFolder": "",
+    "yamlFolderKey": "",
+    "frontmatterTitle": {
+      "enable": false,
+      "key": "title"
+    },
+    "replaceTitle": [],
+    "replacePath": [],
+    "autoclean": {
+      "includeAttachments": true,
+      "enable": false,
+      "excluded": []
+    },
+    "folderNote": {
+      "enable": false,
+      "rename": "index.md",
+      "addTitle": {
+        "enable": false,
+        "key": "title"
+      }
+    },
+    "metadataExtractorPath": ""
+  },
+  "conversion": {
+    "hardbreak": false,
+    "dataview": true,
+    "censorText": [],
+    "tags": {
+      "inline": false,
+      "exclude": [],
+      "fields": []
+    },
+    "links": {
+      "internal": false,
+      "unshared": false,
+      "wiki": false,
+      "slugify": "disable",
+      "unlink": false,
+      "relativePath": true,
+      "textPrefix": "/"
+    }
+  },
+  "embed": {
+    "attachments": true,
+    "overrideAttachments": [
+      {
+        "path": "/^([^\\/]+)\\/(.+)$/",
+        "destination": "/source/images/$2",
+        "forcePush": true
+      }
+    ],
+    "keySendFile": [],
+    "notes": false,
+    "folder": "source/images",
+    "convertEmbedToLinks": "links",
+    "charConvert": "->",
+    "unHandledObsidianExt": [],
+    "sendSimpleLinks": true,
+    "forcePush": true,
+    "useObsidianFolder": false
+  },
+  "plugin": {
+    "shareKey": "share",
+    "excludedFolder": [],
+    "copyLink": {
+      "enable": false,
+      "links": "",
+      "removePart": [],
+      "addCmd": false,
+      "transform": {
+        "toUri": true,
+        "slugify": "lower",
+        "applyRegex": []
+      }
+    },
+    "setFrontmatterKey": "Set"
+  }
+}

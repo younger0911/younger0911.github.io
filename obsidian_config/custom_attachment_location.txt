@@ -1,0 +1,9 @@
+附件位置：images/${noteFileName}
+安装：npm install hexo-filter-image --save
+push之后
+设置
+filter_image:
+  enable: true
+  rules:
+    - pattern: '![]('
+      replace: '![](/images/'
