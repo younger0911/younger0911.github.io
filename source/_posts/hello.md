@@ -1,4 +1,4 @@
 ---
 share: "true"
 ---
-![114](../mages/hello/file-20260320142042362.png)
+![132](../mages/hello/file-20260320150305213.png)
