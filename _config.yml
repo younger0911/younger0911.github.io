@@ -92,3 +92,9 @@ deploy:
 image_link:
   base: /images/          # 图片 URL 前缀
   mode: default           # 默认模式，自动处理 post_asset_folder
+
+filter_image:
+  enable: true
+  rules:
+    - pattern: '![]('
+      replace: '![](/images/'
